@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { dashboardRoutingModule } from '../../components/dashboards/dashboard.routes';
 import { salesRoutingModule } from '../../components/dashboards/sales/salesdashboard.routes';
 import { crmRoutingModule } from '../../components/dashboards/crm/crmdashboard.routes';
+import { inventoryRoutingModule } from '../../components/dashboards/inventory/inventorydashboard.routes';
 
 
 
@@ -10,7 +11,8 @@ import { crmRoutingModule } from '../../components/dashboards/crm/crmdashboard.r
    { path: '', children: [
    ...dashboardRoutingModule.routes,
    ...salesRoutingModule.routes,
-   ...crmRoutingModule.routes
+   ...crmRoutingModule.routes,
+   ...inventoryRoutingModule.routes
 
   ]}
 ];

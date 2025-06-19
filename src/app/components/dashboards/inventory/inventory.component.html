@@ -1,0 +1,135 @@
+<div class="row">
+  <div class="col-4">
+    <div class="card custom-card">
+      <div class="card-header">
+        <div class="card-title">TOTAL CBM</div>
+      </div>
+      <div class="card-body">
+        <apx-chart
+        id="circlechart"
+        [chart]="chartOptions13.chart"
+        [stroke]="chartOptions13.stroke"
+        [plotOptions]="chartOptions13.plotOptions"
+        [series]="chartOptions13.series"
+        [labels]="chartOptions13.labels"
+        [fill]="chartOptions13.fill"
+        [colors]="chartOptions13.colors"
+      ></apx-chart>
+      </div>
+      <div class="card-footer p-0 border-top-0">
+        <div class="row border-top border-block-start-dashed">
+          <div class="col border-end border-inline-end-dashed">
+            <div class="text-center p-3">
+              <span class="fs-14 visit-gender male">CBM / Month</span>
+              <div class="mt-1">
+                <span class="fs-5 fw-medium">1,230</span>
+              </div>
+              <span class="badge bg-success-transparent text-success mt-1"
+                >+12.3%</span
+              >
+            </div>
+          </div>
+          <div class="col">
+            <div class="text-center p-3">
+              <span class="fs-14 visit-gender female">CBM / Day</span>
+              <div class="mt-1">
+                <span class="fs-5 fw-medium">84</span>
+              </div>
+              <span class="badge bg-danger-transparent text-danger mt-1"
+                >-11.3%</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-8">
+        <div class="card custom-card">
+            <div class="top-left"></div>
+            <div class="top-right"></div>
+            <div class="bottom-left"></div>
+            <div class="bottom-right"></div>
+            <div class="card-header">
+                <div class="card-title">INVENTORY MOVEMENT</div>
+            </div>
+            <div class="card-body">
+                <div id="area-spline">
+                    <div id="chart">
+                        <apx-chart [series]="chartOptions2.series" [chart]="chartOptions2.chart" [colors]="chartOptions2.colors"
+                            [xaxis]="chartOptions2.xaxis" [stroke]="chartOptions2.stroke"
+                            [tooltip]="chartOptions2.tooltip" [dataLabels]="chartOptions2.dataLabels"></apx-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-4">
+          <div class="card-title">INVENTORY ITEMS</div>
+        </div>
+        <div class="col-5">
+          <div class="input-group float-start">
+            <input type="text" class="form-control" placeholder="Search Inventory Items" aria-label="Search Inventory Items">
+            <button class="btn btn-primary" type="button"><i class="ri-search-line"></i></button>
+          </div>
+
+        </div>
+      <div class="col-3">
+        <button class="btn btn-success-transparent rounded-pill float-end">
+                <i class="ri-download-2-line"></i> Export Report
+        </button>
+        <button type="button" class="btn btn-primary rounded-pill" (click)="addInventoryItem()">
+          <i class="ri-add-line"></i> Add Item
+        </button>
+      </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="table table-responsive">
+    <table class="table table-bordered table-vcenter text-nowrap mb-0">
+      <thead>
+        <tr>
+          <th class="w-1">#</th>
+          <th>Product</th>
+          <th>Category</th>
+          <th>Quantity</th>
+          <th>CBM</th>
+          <th>Last Updated</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of inventoryItems; let i = index">
+          <td>{{ x.id }}</td>
+          <td>{{ x.name }}</td>
+          <td>{{ x.category }}</td>
+          <td>{{ x.quantity }}</td>
+          <td>{{ x.cbm }}</td>
+          <td>{{ x.lastUpdated | date:'short'  }}</td>
+          <td>
+            <div class="hstack gap-2 fs-15">
+              <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-success-transparent rounded-pill">
+                <i class="ri-download-2-line"></i>
+              </a>
+              <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-transparent rounded-pill">
+                <i class="ri-edit-line"></i>
+              </a>
+              <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-transparent rounded-pill">
+                <i class="ri-delete-bin-line"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

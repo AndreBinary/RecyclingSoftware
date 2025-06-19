@@ -12,6 +12,6 @@ export const content1: Routes = [
   ],
   exports: [RouterModule],
 })
-export class SalesRoutingModule {
+export class CRMRoutingModule {
   
 }

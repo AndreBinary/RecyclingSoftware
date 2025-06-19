@@ -104,12 +104,15 @@ export class NavService implements OnDestroy {
       dirchange: false,
       children: [
         { path: '/sales', title: 'Sales', type: 'link', dirchange: false },
-        { path: '/CRM', title: 'CRM', type: 'sub', dirchange: false,children:[
-          { path: '/CRM/Companies', title: 'Companies', type: 'link', dirchange: false },
-          { path: '/CRM/Contacts', title: 'Contacts', type: 'link', dirchange: false },
-          { path: '/CRM/Deals', title: 'Deals', type: 'link', dirchange: false },
-          { path: '/CRM/Leads', title: 'Leads', type: 'link', dirchange: false },
-        ] },
+        { path: '/crm', title: 'CRM', type: 'sub', dirchange: false, children: [
+          { path: '/crm/companies', title: 'Companies', type: 'link', dirchange: false },
+          { path: '/crm/contacts', title: 'Contacts', type: 'link', dirchange: false },
+          { path: '/crm/deals', title: 'Deals', type: 'link', dirchange: false },
+          { path: '/crm/leads', title: 'Leads', type: 'link', dirchange: false },
+        ],
+      },
+      { path: '/vehicles', title: 'Vehicles', type: 'link', dirchange: false },
+      { path: '/inventory', title: 'Inventory', type: 'link', dirchange: false },
       ],
     },
   ];
