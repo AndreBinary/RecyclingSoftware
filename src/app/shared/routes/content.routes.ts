@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { dashboardRoutingModule } from '../../components/dashboards/dashboard.routes';
 import { salesRoutingModule } from '../../components/dashboards/sales/salesdashboard.routes';
+import { crmRoutingModule } from '../../components/dashboards/crm/crmdashboard.routes';
 
 
 
@@ -9,6 +10,7 @@ import { salesRoutingModule } from '../../components/dashboards/sales/salesdashb
    { path: '', children: [
    ...dashboardRoutingModule.routes,
    ...salesRoutingModule.routes,
+   ...crmRoutingModule.routes
 
   ]}
 ];
@@ -19,4 +21,4 @@ import { salesRoutingModule } from '../../components/dashboards/sales/salesdashb
     })],
     exports: [RouterModule]
 })
-export class SaredRoutingModule { }
+export class SharedRoutingModule { }

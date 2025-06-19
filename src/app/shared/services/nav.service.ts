@@ -103,40 +103,13 @@ export class NavService implements OnDestroy {
       active: false,
       dirchange: false,
       children: [
-        { path: '/sales', title: 'sales', type: 'link', dirchange: false },
-      ],
-    },
-    {
-      title: 'Nested Menu',
-      icon: `<svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polygon points="32 80 128 136 224 80 128 24 32 80" opacity="0.2"/><polyline points="32 176 128 232 224 176" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline points="32 128 128 184 224 128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polygon points="32 80 128 136 224 80 128 24 32 80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>`,
-      type: 'sub',
-      active: false,
-      children: [
-        {
-          title: 'Nested-1',
-          dirchange: false,
-          type: 'empty',
-          active: false,
-          selected: false,
-          path: '/nested-menu/nested-1',
-        },
-        {
-          title: 'Nested-2',
-          type: 'sub',
-          active: false,
-          children: [
-            {
-              title: 'Nested-2.1',
-              type: 'empty',
-              active: false,
-            },
-            {
-              title: 'Nested-2.2',
-              type: 'empty',
-              active: false,
-            },
-          ],
-        },
+        { path: '/sales', title: 'Sales', type: 'link', dirchange: false },
+        { path: '/CRM', title: 'CRM', type: 'sub', dirchange: false,children:[
+          { path: '/CRM/Companies', title: 'Companies', type: 'link', dirchange: false },
+          { path: '/CRM/Contacts', title: 'Contacts', type: 'link', dirchange: false },
+          { path: '/CRM/Deals', title: 'Deals', type: 'link', dirchange: false },
+          { path: '/CRM/Leads', title: 'Leads', type: 'link', dirchange: false },
+        ] },
       ],
     },
   ];

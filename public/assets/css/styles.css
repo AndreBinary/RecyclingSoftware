@@ -9904,14 +9904,13 @@ caption {
 
 .authentication-background {
   position: relative;
-  background-image: linear-gradient(to right top, var(--primary-color), rgba(var(--secondary-rgb), 1));
 }
 .authentication-background:before {
   position: absolute;
   content: "";
   width: 100%;
   height: 100%;
-  background-image: url(../images/media/backgrounds/bg7.png);
+  background-image: url(../images/brand-logos/recyclingBackground.png);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

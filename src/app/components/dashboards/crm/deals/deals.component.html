@@ -1,0 +1,254 @@
+<!-- Start::row-1 -->
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <span class="fw-semibold fs-16 me-1">Deals</span><span
+                            class="badge bg-light text-default align-middle">16</span>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#create-contact"
+                            (click)="openWindowCustomClass(content)">
+                            <i class="ri-add-line me-1 fw-semibold align-middle"></i>New Deal</button>
+                        <ng-template #content let-modal>
+                            <div class="modal-header">
+                                <h4 class="modal-title">Create Deal</h4>
+                                <button type="button" class="btn-close" aria-label="Close"
+                                    (click)="modal.dismiss('Cross click')"></button>
+                            </div>
+                            <div class="modal-body px-4">
+                                <div class="row gy-3">
+                                    <div class="col-xl-12">
+                                        <div class="mb-0 text-center"> <span class="avatar avatar-xxl avatar-rounded">
+                                                <img [src]="url1 ? url1 : './assets/images/faces/9.jpg'" alt="" id="profile-img"> <span
+                                                    class="badge rounded-pill bg-primary avatar-badge"> <input
+                                                        type="file" name="photo" (change)="handleFileInput($event)"
+                                                        class="position-absolute w-100 h-100 op-0" id="profile-change">
+                                                    <i class="fe fe-camera"></i> </span> </span> </div>
+                                    </div>
+                                    <div class="col-xl-6"> <label for="deal-name" class="form-label">Contact
+                                            Name</label> <input type="text" class="form-control" id="deal-name"
+                                            placeholder="Contact Name"> </div>
+                                    <div class="col-xl-6"> <label for="deal-lead-score" class="form-label">Deal
+                                            Value</label> <input type="number" class="form-control" id="deal-lead-score"
+                                            placeholder="Deal Value"> </div>
+                                    <div class="col-xl-12"> <label for="company-name" class="form-label">Company
+                                            Name</label> <input type="text" class="form-control" id="company-name"
+                                            placeholder="Company Name"> </div>
+                                    <div class="col-xl-12"> <label class="form-label">Last Contacted</label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-text text-muted"> <i class="ri-calendar-line"></i></div>
+                        <input type="text" class="form-control" placeholder="yyyy-mm-dd" name="dp" mwlFlatpickr
+                            [(ngModel)]="basicDemoValue">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light"
+                                    (click)="modal.close('Close click')">Close</button>
+                                <button type="button" class="btn btn-primary">CreateDeal</button>
+                            </div>
+                        </ng-template>
+
+                        <button class="btn btn-success-light btn-sm">Export As CSV</button>
+                        <div class="dropdown" ngbDropdown>
+                            <a href="javascript:void(0);" class="btn btn-light btn-sm btn-wave waves-effect waves-light no-caret"
+                                ngbDropdownToggle data-bs-toggle="dropdown" aria-expanded="false">
+                                Sort By<i class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
+                            </a>
+                            <ul class="dropdown-menu" role="menu" ngbDropdownMenu>
+                                <li><a  href="javascript:void(0)" ngbDropdownItem>Newest</a></li>
+                                <li><a  href="javascript:void(0)" ngbDropdownItem>Date Added</a></li>
+                                <li><a  href="javascript:void(0)" ngbDropdownItem>A - Z</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End::row-1 -->
+
+<!-- Start::row-2 -->
+<div class="row">
+    <div class="col-xxl-2 col-md-4">
+        <div class="card custom-card">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-top flex-wrap justify-content-between">
+                    <div>
+                        <div class="fw-semibold fs-15 lead-discovered">Leads Discovered</div>
+                        <span class=" badge bg-light text-default">24 Leads</span>
+                    </div>
+                    <div>
+                        <span class="text-primary fw-semibold">$25,238</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-2 col-md-4">
+        <div class="card custom-card">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-top flex-wrap justify-content-between">
+                    <div>
+                        <div class="fw-semibold fs-15 lead-qualified">Qualified Leads</div>
+                        <span class=" badge bg-light text-default">17 Leads</span>
+                    </div>
+                    <div>
+                        <span class="text-warning fw-semibold">$32,453</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-2 col-md-4">
+        <div class="card custom-card">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-top flex-wrap justify-content-between">
+                    <div>
+                        <div class="fw-semibold fs-15 contact-initiated">Contact Initiated</div>
+                        <span class=" badge bg-light text-default">5 Leads</span>
+                    </div>
+                    <div>
+                        <span class="text-success fw-semibold">$13,756</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-2 col-md-4">
+        <div class="card custom-card">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-top flex-wrap justify-content-between">
+                    <div>
+                        <div class="fw-semibold fs-15 need-identified">Needs Identified</div>
+                        <span class=" badge bg-light text-default">43 Leads</span>
+                    </div>
+                    <div>
+                        <span class="text-info fw-semibold">$47,093</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-2 col-md-4">
+        <div class="card custom-card">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-top flex-wrap justify-content-between">
+                    <div>
+                        <div class="fw-semibold fs-15 negotiation">Negotiation</div>
+                        <span class=" badge bg-light text-default">15 Leads</span>
+                    </div>
+                    <div>
+                        <span class="text-danger fw-semibold">$26,146</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-2 col-md-4">
+        <div class="card custom-card">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-top flex-wrap justify-content-between">
+                    <div>
+                        <div class="fw-semibold fs-15 deal-finalized">Deal Finalized</div>
+                        <span class=" badge bg-light text-default">127 Deals</span>
+                    </div>
+                    <div>
+                        <span class="text-secondary fw-semibold">$1,74,679</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End::row-2 -->
+
+<!-- Start::row-3 -->
+<div class="row" cdkDropListGroup>
+    <div class="col-xxl-2" id="leads-discovered" >
+        <div
+        cdkDropList
+        [cdkDropListData]="col1"
+        id="draggable-right"
+        (cdkDropListDropped)="drop($event)"
+      >
+      @for( item of col1;track $index){
+
+          <div  cdkDrag [innerHTML]="item"></div>
+      }
+    </div>
+    </div>
+    <div class="col-xxl-2" id="leads-qualified"  > 
+        <div
+        cdkDropList
+        [cdkDropListData]="col2"
+        id="draggable-left"
+        (cdkDropListDropped)="drop($event)"
+      >
+      @for( item of col2;track $index){
+
+        <div  cdkDrag [innerHTML]="item"></div>
+    }
+    </div>
+    </div>
+    <div class="col-xxl-2" id="contact-initiated" >
+        <div
+            cdkDropList
+            [cdkDropListData]="col3"
+            id="draggable-left"
+            (cdkDropListDropped)="drop($event)"
+          >
+          @for( item of col3;track $index){
+
+            <div  cdkDrag [innerHTML]="item"></div>
+        }
+        </div>
+    </div>
+    <div class="col-xxl-2" id="needs-identified" >
+        <div
+        cdkDropList
+        [cdkDropListData]="col4"
+        id="draggable-left"
+        (cdkDropListDropped)="drop($event)"
+      >
+      @for( item of col4;track $index){
+
+        <div  cdkDrag [innerHTML]="item"></div>
+    }
+    </div>
+    </div>
+    <div class="col-xxl-2" id="negotiation" >
+        <div
+            cdkDropList
+            [cdkDropListData]="col5"
+            id="draggable-left"
+            (cdkDropListDropped)="drop($event)"
+          >
+          @for( item of col5;track $index){
+
+            <div  cdkDrag [innerHTML]="item"></div>
+        }
+        </div>
+    </div>
+    <div class="col-xxl-2" id="deal-finalized" >
+        <div
+            cdkDropList
+            [cdkDropListData]="col6"
+            id="draggable-left"
+            (cdkDropListDropped)="drop($event)"
+          >
+          @for( item of col6;track $index){
+
+            <div  cdkDrag [innerHTML]="item"></div>
+        }
+        </div>
+    </div>
+</div>
+<!-- End::row-3 -->
