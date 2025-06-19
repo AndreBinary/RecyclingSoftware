@@ -83,7 +83,7 @@
         <button class="btn btn-success-transparent rounded-pill float-end">
                 <i class="ri-download-2-line"></i> Export Report
         </button>
-        <button type="button" class="btn btn-primary rounded-pill" (click)="addInventoryItem()">
+        <button type="button" class="btn btn-primary rounded-pill" (click)="addInventoryItem(basicModal)">
           <i class="ri-add-line"></i> Add Item
         </button>
       </div>
@@ -133,3 +133,44 @@
 
   </div>
 </div>
+
+<ng-template #basicModal let-modal>
+            <div class="modal-header">
+              <h6 class="modal-title" id="exampleModalLabel1">{{edit_or_add_product}}</h6>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                (click)="modal.dismiss('Cross click')"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col">
+                  <div class="form-floating mb-3">
+                    <input type="search" class="form-control" id="floatingInput" placeholder="product">
+                    <label for="floatingInput">Product Name</label>
+                  </div>
+                </div>  
+                <div class="col">
+                   <div class="form-floating">
+                    <input type="number" class="form-control" id="floatingQuantity" placeholder="0">
+                    <label for="floatingQuantity">Quantity</label>
+                  </div>
+                </div>     
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+                (click)="modal.close('Save click')"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+</ng-template>

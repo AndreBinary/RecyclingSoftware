@@ -2,7 +2,7 @@ import {Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {NgApexchartsModule} from 'ng-apexcharts';
 import { SharedModule } from '../../../shared/shared.module';
-import {  NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {  NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StatisticsChartData, StatisticsChartData1, TopCategoryChartData } from '../../../shared/data/dashboard_chartData/salechart.data';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./inventory.component.scss']
 })
 export class InventoryComponent  {
+  edit_or_add_product = 'Add New Product';
   public chartOptions = StatisticsChartData;
   public chartOptions1 = StatisticsChartData1;
   inventoryItems:any[]=[{
@@ -54,7 +55,6 @@ export class InventoryComponent  {
     status: 'In Stock',
     imgUrl: 'https://i.imgur.com/GLqxxnn.png'
   }];
-
 
   table_data = [
   {
@@ -654,24 +654,32 @@ xaxis: {
 }
   }
   renderer: any;
-
   rangeValue: { from: Date; to: Date } = {
     from: new Date(),
     to: (new Date() as any)['fp_incr'](10)
   };
 
-  constructor(){
+  constructor(private modalService: NgbModal){
     document.querySelector('.single-page-header')?.classList.add('d-none');
   }
-  addInventoryItem(){}
-  
+  addInventoryItem(x:any){
+    this.edit_or_add_product = 'Add New Product';
+    this.modalService.open(x,{size:'xl'});
+  }
+
   
 editItem(x:any){
-  
+  this.edit_or_add_product = 'Edit Product';
+  this.modalService.open(x,{size:'xl'}); 
 }
+
 deleteItem(x:any){ 
 
 }
+
+openBasic(basicModal: any) {
+    this.modalService.open(basicModal);
+  }
 
   ngOnDestroy(){
     document.querySelector('.single-page-header')?.classList.remove('d-none');
