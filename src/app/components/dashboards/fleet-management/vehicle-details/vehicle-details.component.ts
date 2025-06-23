@@ -13,7 +13,7 @@ import { BasicPieChartData } from "../../../../shared/data/apexchart.data";
   styleUrls: ['./vehicle-details.component.scss']
 })
 export class VehicleDetailsComponent {
-      public BasicPieChartData: any = BasicPieChartData;
+  public BasicPieChartData: any = BasicPieChartData;
 
   vehicle = {
     id: 1,
@@ -30,7 +30,7 @@ export class VehicleDetailsComponent {
     serviceInterval: '20,000',
     nextServiceMaintenance: '2025-09-15',
     assignedTo: 'John Doe',
-    milage : 150000,
+    milage: 150000,
     assignedDriver: {
       name: 'John Doe',
       license: 'EC',
@@ -61,7 +61,7 @@ export class VehicleDetailsComponent {
       }
     ],
     fuelLogs: [
-      { litres: 120, cost: 'R3000', filledBy: 'Mike B', location: 'BP Midrand' }
+      { date: "2025/06/23", litres: 120, cost: 'R3000', filledBy: 'Mike B', location: 'BP Midrand' }
     ],
     documents: [
       { type: 'Vehicle Registration', status: 'Uploaded' },
