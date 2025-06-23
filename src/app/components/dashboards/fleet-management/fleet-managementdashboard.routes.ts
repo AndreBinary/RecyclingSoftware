@@ -22,6 +22,12 @@ export const admin: Routes = [
         loadComponent: () =>
           import('./vehicles/vehicles.component').then((m) => m.VehiclesComponent),
         title: 'Fleet Management Overview',
+      },
+      {
+        path: 'fleet-management/vehicles/:id',
+        loadComponent: () =>
+          import('./vehicle-details/vehicle-details.component').then((m) => m.VehicleDetailsComponent),
+        title: 'Fleet Management Overview',
       }
     ],
   },

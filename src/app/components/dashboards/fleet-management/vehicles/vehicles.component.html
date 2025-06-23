@@ -495,59 +495,64 @@
       </div>
       <div class="card-body p-0">
         <div class="table-responsive">
-          <table class="table text-nowrap">
-            <thead>
-              <tr>
-                <th scope="col">Vehicle Name</th>
-                <th scope="col">Reg Number</th>
-                <th scope="col">Make & Model</th>
-                <th scope="col">Status</th>
-                <th scope="col">Milage (KM)</th>
-                <th scope="col">Assigned To</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (vehicle of vehicleTableData; track $index) {
-              <tr class="task-list">
-                <td>
-                  <span class="fw-medium">{{ vehicle.vehicleName }}</span>
-                </td>
-                <td>
-                  <span class="fw-medium">{{ vehicle.regNumber }}</span>
-                </td>
-                <td>
-                  {{ vehicle.makeModel }}
-                </td>
-                <td>
-                  <span class="fw-medium">{{ vehicle.status }}</span>
-                </td>
-                <td>
-                  {{ vehicle.milage }}
-                </td>
-                <td>
-                  <span class="fw-medium"> {{ vehicle.assignedTo }}</span>
-                </td>
-                <td>
-                  <button
-                    class="btn btn-primary-light btn-icon btn-sm"
-                    data-bs-toggle="tooltip"
-                    placement="top"
-                    ngbTooltip="Edit"
-                  >
-                    <i class="ri-edit-line"></i>
-                  </button>
-                  <button
-                    (click)="click(vehicle.regNumber)"
-                    class="btn btn-danger-light btn-icon ms-1 btn-sm task-delete-btn"
-                  >
-                    <i class="ri-delete-bin-5-line"></i>
-                  </button>
-                </td>
-              </tr>
-              }
-            </tbody>
-          </table>
+       <table class="table text-nowrap">
+  <thead>
+    <tr>
+      <th scope="col">Vehicle Name</th>
+      <th scope="col">Reg Number</th>
+      <th scope="col">Make & Model</th>
+      <th scope="col">Status</th>
+      <th scope="col">Milage (KM)</th>
+      <th scope="col">Assigned To</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (vehicle of vehicleData; track $index) {
+      <tr
+        class="task-list"
+        [routerLink]="['/fleet-management/vehicles', vehicle.id]"
+        style="cursor: pointer;"
+      >
+        <td>
+          <span class="fw-medium">{{ vehicle.vehicleName }}</span>
+        </td>
+        <td>
+          <span class="fw-medium">{{ vehicle.regNumber }}</span>
+        </td>
+        <td>
+          {{ vehicle.makeModel }}
+        </td>
+        <td>
+          <span class="fw-medium">{{ vehicle.status }}</span>
+        </td>
+        <td>
+          {{ vehicle.milage }}
+        </td>
+        <td>
+          <span class="fw-medium"> {{ vehicle.assignedTo }}</span>
+        </td>
+        <td>
+          <button
+            class="btn btn-primary-light btn-icon btn-sm"
+            data-bs-toggle="tooltip"
+            placement="top"
+            ngbTooltip="Edit"
+            (click)="$event.stopPropagation()"
+          >
+            <i class="ri-edit-line"></i>
+          </button>
+          <button
+            (click)="click(vehicle.regNumber); $event.stopPropagation()"
+            class="btn btn-danger-light btn-icon ms-1 btn-sm task-delete-btn"
+          >
+            <i class="ri-delete-bin-5-line"></i>
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
         </div>
       </div>
       <div class="card-footer border-top-0">

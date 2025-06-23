@@ -4,10 +4,10 @@ import { ChartComponent, NgApexchartsModule } from "ng-apexcharts";
 import { NgbModal, NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FlatpickrModule } from "angularx-flatpickr";
 import { FormsModule } from "@angular/forms";
-import { StatisticsChartData, StatisticsChartData1, TopCategoryChartData } from "../../../../shared/data/dashboard_chartData/salechart.data";
 import { Component, ViewChild } from "@angular/core";
 import { interval } from "rxjs";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { vehicleTableData } from "../../../../shared/data/fleet_management/vehicles";
 
 
 export type ChartOptions = {
@@ -206,21 +206,7 @@ const DATA = [
 export class VehiclesComponent {
   @ViewChild('chart') chart!: ChartComponent;
   public chartOptions: Partial<ChartOptions> | any;
-
-
-  public vehicleTableData: any[] = [
-    { vehicleName: "Truck Alpha", regNumber: "BY 65 SM GP", makeModel: "Scania R500", status: "Active", milage: 120350, assignedTo: "John Doe", action: "View" },
-    { vehicleName: "Tipper Bravo", regNumber: "CA 12 AB GP", makeModel: "Isuzu FTR 850", status: "In Service", milage: 85400, assignedTo: "Jane Smith", action: "View" },
-    { vehicleName: "Compactor Charlie", regNumber: "ND 34 XY GP", makeModel: "Mercedes-Benz Econic", status: "Maintenance", milage: 143200, assignedTo: "Mike Brown", action: "View" },
-    { vehicleName: "TLB Delta", regNumber: "GP 78 QW GP", makeModel: "Caterpillar 428F2 TLB", status: "Inactive", milage: 99000, assignedTo: "Anna Lee", action: "View" },
-    { vehicleName: "Loader Echo", regNumber: "FS 90 ZX GP", makeModel: "Volvo L120H Loader", status: "Active", milage: 110500, assignedTo: "Chris Green", action: "View" },
-    { vehicleName: "Truck Foxtrot", regNumber: "MP 23 RT GP", makeModel: "MAN TGS 26.440", status: "Active", milage: 130200, assignedTo: "Sarah White", action: "View" },
-    { vehicleName: "Tipper Golf", regNumber: "EC 45 YU GP", makeModel: "Hino 700 Tipper", status: "In Service", milage: 101300, assignedTo: "David Black", action: "View" },
-    { vehicleName: "Compactor Hotel", regNumber: "NW 56 OP GP", makeModel: "IVECO Eurocargo Compactor", status: "Maintenance", milage: 118900, assignedTo: "Linda Blue", action: "View" },
-    { vehicleName: "TLB India", regNumber: "LP 67 QZ GP", makeModel: "JCB 3CX TLB", status: "Inactive", milage: 95000, assignedTo: "Peter Red", action: "View" },
-    { vehicleName: "Loader Juliet", regNumber: "TR 78 WX GP", makeModel: "Komatsu WA320 Loader", status: "Active", milage: 123400, assignedTo: "Emily Green", action: "View" },
-    { vehicleName: "Truck Kilo", regNumber: "UV 89 ER GP", makeModel: "DAF CF 85", status: "Active", milage: 140000, assignedTo: "Oscar Brown", action: "View" }
-  ];
+  public vehicleData = vehicleTableData;
 
   constructor(private modalService: NgbModal) {
     this.chartOptions = {
