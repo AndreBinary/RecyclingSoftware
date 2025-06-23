@@ -11,30 +11,30 @@ export const admin: Routes = [
           import('../crm/crm.component').then((m) => m.CRMComponent),
         title: 'CRM Dashboard',
       },
-        {
-          path: 'crm/companies',
-          loadComponent: () =>
-            import('./companies/companies.component').then((m) => m.CompaniesComponent),
-          title: 'CRM Companies',
-        },
-        {
-          path: 'crm/contacts',
-          loadComponent: () =>
-            import('./contacts/contacts.component').then((m) => m.ContactsComponent),
-          title: 'CRM Contacts',
-        },
-        {
-          path: 'crm/deals',
-          loadComponent: () =>
-            import('./deals/deals.component').then((m) => m.DealsComponent),
-          title: 'CRM Deals',
-        },
-        {
-          path: 'crm/leads',
-          loadComponent: () =>
-            import('./leads/leads.component').then((m) => m.LeadsComponent),
-          title: 'CRM Leads',
-        },
+      {
+        path: 'crm/companies',
+        loadComponent: () =>
+          import('./companies/companies.component').then((m) => m.CompaniesComponent),
+        title: 'CRM Companies',
+      },
+      {
+        path: 'crm/contacts',
+        loadComponent: () =>
+          import('./contacts/contacts.component').then((m) => m.ContactsComponent),
+        title: 'CRM Contacts',
+      },
+      {
+        path: 'crm/deals',
+        loadComponent: () =>
+          import('./deals/deals.component').then((m) => m.DealsComponent),
+        title: 'CRM Deals',
+      },
+      {
+        path: 'crm/leads',
+        loadComponent: () =>
+          import('./leads/leads.component').then((m) => m.LeadsComponent),
+        title: 'CRM Leads',
+      },
     ],
   },
 ];
