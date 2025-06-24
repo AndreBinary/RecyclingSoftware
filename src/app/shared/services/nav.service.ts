@@ -2,13 +2,14 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Subject, BehaviorSubject, fromEvent } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { path } from 'animejs';
 // Menu
 export interface Menu {
   headTitle?: string;
   headTitle2?: string;
   path?: string;
   title?: string;
-  title1?:string;
+  title1?: string;
   icon?: string;
   type?: string;
   badgeValue?: string;
@@ -104,15 +105,21 @@ export class NavService implements OnDestroy {
       dirchange: false,
       children: [
         { path: '/sales', title: 'Sales', type: 'link', dirchange: false },
-        { path: '/crm', title: 'CRM', type: 'sub', dirchange: false, children: [
-          { path: '/crm/companies', title: 'Companies', type: 'link', dirchange: false },
-          { path: '/crm/contacts', title: 'Contacts', type: 'link', dirchange: false },
-          { path: '/crm/deals', title: 'Deals', type: 'link', dirchange: false },
-          { path: '/crm/leads', title: 'Leads', type: 'link', dirchange: false },
-        ],
-      },
-      { path: '/vehicles', title: 'Vehicles', type: 'link', dirchange: false },
-      { path: '/inventory', title: 'Inventory', type: 'link', dirchange: false },
+        {
+          path: '/crm', title: 'CRM', type: 'sub', dirchange: false, children: [
+            { path: '/crm/companies', title: 'Companies', type: 'link', dirchange: false },
+            { path: '/crm/contacts', title: 'Contacts', type: 'link', dirchange: false },
+            { path: '/crm/deals', title: 'Deals', type: 'link', dirchange: false },
+            { path: '/crm/leads', title: 'Leads', type: 'link', dirchange: false },
+          ],
+        },
+        // { path: '/vehicles', title: 'Vehicles', type: 'link', dirchange: false },
+        { path: '/fleet-management', title: 'Fleet Management', type: 'sub', dirchange: false, children: [
+          { path: '/fleet-management/overview', title: 'Overview', type: 'link', dirchange: false },
+          { path: '/fleet-management/vehicles', title: 'Vehicles', type: 'link', dirchange: false },
+          // { path: '/fleet-management/vehicles/:id', title: 'Vehicle Details', type: 'link', dirchange: false },
+        ] },
+        { path: '/inventory', title: 'Inventory', type: 'link', dirchange: false },
       ],
     },
   ];

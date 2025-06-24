@@ -1,0 +1,414 @@
+<!-- Start:: Section-1 -->
+<section class="section ">
+  <div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header d-md-flex d-block">
+            <div class="h5 mb-0 d-sm-flex d-bllock align-items-center">
+              <div>
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWfLUttKTpO8uBPoJACfeyYlRNrAYnE0AGmg&s"
+                  alt=""
+                />
+              </div>
+              <div class="flex justify-between items-center mb-6 px-4">
+                <div class="fw-semibold mb-4">
+                  Vehicle: {{ vehicle.model }} – {{ vehicle.regNumber }}
+                </div>
+                <div class="space-x-2">
+                  <button
+                    class="btn btn-primary-light btn-wave me-2 waves-effect waves-light"
+                  >
+                    <i class="ti ti-settings align-middle"></i> Schedule Service
+                  </button>
+                  <button
+                    class="btn btn-primary-light btn-wave me-2 waves-effect waves-light"
+                  >
+                    <i class="ti ti-user align-middle"></i> Assign Driver
+                  </button>
+                  <button
+                    class="btn btn-primary-light btn-wave me-2 waves-effect waves-light"
+                  >
+                    <i class="ti ti-dashboard align-middle"></i> Add Fuel Log
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End:: Section-1 -->
+
+<!-- Start:: row-2 -->
+<div class="row">
+  <div class="card custom-card overflow-hidden">
+    <div class="card-header justify-content-between">
+      <div class="card-title">VEHICLE DETAILS</div>
+    </div>
+    <div class="card-body p-0">
+      <div class="row p-3">
+        <div
+          class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+        >
+          <span>Registration:</span>
+          <span class="fw-semibold">{{ vehicle?.regNumber || "N/A" }}</span>
+        </div>
+        <div
+          class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+        >
+          <span>Make:</span>
+          <span class="fw-semibold">{{ vehicle?.make || "N/A" }}</span>
+        </div>
+        <div
+          class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+        >
+          <span>Model:</span>
+          <span class="fw-semibold">{{ vehicle?.model || "N/A" }}</span>
+        </div>
+        <div
+          class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+        >
+          <span>Type:</span>
+          <span class="fw-semibold">{{ vehicle?.type || "N/A" }}</span>
+        </div>
+        <div
+          class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+        >
+          <span>Vin Number:</span>
+          <span class="fw-semibold">{{ vehicle?.vinNumber || "N/A" }}</span>
+        </div>
+        <div
+          class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+        >
+          <span>Service Interval (KM):</span>
+          <span class="fw-semibold">{{
+            vehicle?.serviceInterval || "N/A"
+          }}</span>
+        </div>
+        <div
+          class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+        >
+          <span>Fuel Capacity (L):</span>
+          <span class="fw-semibold">{{ vehicle?.fuelCapacity || "N/A" }}</span>
+        </div>
+        <div
+          class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+        >
+          <span>Current Milage (KM):</span>
+          <span class="fw-semibold">{{ vehicle?.milage || "N/A" }}</span>
+        </div>
+        <div
+          class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+        >
+          <span>Next Service/Maintenance:</span>
+          <span class="fw-semibold">{{
+            vehicle?.nextServiceMaintenance || "N/A"
+          }}</span>
+        </div>
+        <div
+          class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+        >
+          <span>Status:</span>
+          <span class="fw-semibold">{{ vehicle?.status || "N/A" }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-6 col-xl-6 col-lg-6">
+    <div>
+      <div class="card custom-card overflow-hidden">
+        <div class="card-header justify-content-between">
+          <div class="card-title">ASSIGNED DRIVER</div>
+        </div>
+        <div class="card-body p-0">
+          <div class="row p-3">
+            <div
+              class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+            >
+              <span>Full Name:</span>
+              <span class="fw-semibold">{{
+                vehicle?.assignedDriver?.name || "N/A"
+              }}</span>
+            </div>
+            <div
+              class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+            >
+              <span>Employee No:</span>
+              <span class="fw-semibold">{{
+                vehicle?.assignedDriver?.employeeNo || "N/A"
+              }}</span>
+            </div>
+            <div
+              class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+            >
+              <span>License:</span>
+              <span class="fw-semibold">{{
+                vehicle?.assignedDriver?.license || "N/A"
+              }}</span>
+            </div>
+            <div
+              class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+            >
+              <span>License Expiry Date:</span>
+              <span class="fw-semibold">{{
+                vehicle?.assignedDriver?.licenseExp || "N/A"
+              }}</span>
+            </div>
+            <div
+              class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+            >
+              <span>Phone Number:</span>
+              <span class="fw-semibold">{{
+                vehicle?.assignedDriver?.phone || "N/A"
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card custom-card overflow-hidden">
+        <div class="card-header justify-content-between">
+          <div class="card-title">Latest Trip</div>
+        </div>
+        <div class="card-body p-0">
+          <div class="row p-3">
+            <div
+              class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+            >
+              <span>2025/06/23:</span>
+              <span class="fw-semibold">Boksburg To Midrand</span>
+            </div>
+            <div
+              class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+            >
+              <span>Distance:</span>
+              <span class="fw-semibold">46.2 km</span>
+            </div>
+            <div
+              class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+            >
+              <span>Duration:</span>
+              <span class="fw-semibold">39 minutes</span>
+            </div>
+            <div
+              class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
+            >
+              <span>Fuel Used:</span>
+              <span class="fw-semibold">20.17 liters</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <div class="card custom-card">
+      <div class="top-left"></div>
+      <div class="top-right"></div>
+      <div class="bottom-left"></div>
+      <div class="bottom-right"></div>
+      <div class="card-header">
+        <div class="card-title">Latest Fuel Efficiently</div>
+      </div>
+      <div class="card-body">
+        <div id="radialbar-basic">
+          <apx-chart
+            [series]="BasicPieChartData.series"
+            [chart]="BasicPieChartData.chart"
+            [plotOptions]="BasicPieChartData.plotOptions"
+            [labels]="BasicPieChartData.labels"
+            [colors]="BasicPieChartData.colors"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End:: row-2 -->
+
+<div class="row">
+  <div>
+    <div class="card custom-card overflow-hidden">
+      <div class="card-header justify-content-between">
+        <div class="card-title">Maintenance & Service</div>
+        <!-- <div class="dropdown" ngbDropdown>
+          <a
+            href="javascript:void(0);"
+            class="p-2 fs-12 no-caret"
+            ngbDropdownToggle
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Sort By<i class="ri-arrow-down-s-line align-middle ms-1"></i>
+          </a>
+          <ul class="dropdown-menu" ngbDropdownMenu role="menu">
+            <li>
+              <a
+                class="dropdown-item"
+                ngbDropdownItem
+                href="javascript:void(0);"
+                >Today</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                ngbDropdownItem
+                href="javascript:void(0);"
+                >This Week</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                ngbDropdownItem
+                href="javascript:void(0);"
+                >Last Week</a
+              >
+            </li>
+          </ul>
+        </div> -->
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table text-nowrap table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Type</th>
+                <th scope="col">Description</th>
+                <th scope="col">Cost</th>
+                <th scope="col">Performed By</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="align-items-center">
+                    @for (vehicle of vehicle.maintenanceHistory; track vehicle)
+                    {
+                    <p class="mb-0 mt-1 fw-semibold">{{ vehicle.date }}</p>
+                    }
+                  </div>
+                </td>
+                <td>
+                  <div class="align-items-center">
+                    @for (vehicle of vehicle.maintenanceHistory; track vehicle)
+                    {
+                    <p class="mb-0 mt-1 fw-semibold">{{ vehicle.type }}</p>
+                    }
+                  </div>
+                </td>
+                <td>
+                  <div class="align-items-center">
+                    @for (vehicle of vehicle.maintenanceHistory; track vehicle)
+                    {
+                    <p class="mb-0 mt-1 fw-semibold">{{ vehicle.description }}</p>
+                    }
+                  </div>
+                </td>
+                <td>
+                  <div class="align-items-center">
+                    @for (vehicle of vehicle.maintenanceHistory; track vehicle)
+                    {
+                    <p class="mb-0 mt-1 fw-semibold">{{ vehicle.cost }}</p>
+                    }
+                  </div>
+                </td>
+                 <td>
+                  <div class="align-items-center">
+                    @for (vehicle of vehicle.maintenanceHistory; track vehicle)
+                    {
+                    <p class="mb-0 mt-1 fw-semibold">{{ vehicle.performedBy }}</p>
+                    }
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div>
+    <div class="card custom-card overflow-hidden">
+      <div class="card-header justify-content-between">
+        <div class="card-title">Fuel Logs</div>
+        
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table text-nowrap table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Liters</th>
+                <th scope="col">Cost</th>
+                <th scope="col">Filled By</th>
+                <th scope="col">Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                 <td>
+                  <div class="align-items-center">
+                    @for (vehicle of vehicle.fuelLogs; track vehicle)
+                    {
+                    <p class="mb-0 mt-1 fw-semibold">{{ vehicle.date }}</p>
+                    }
+                  </div>
+                </td>
+                <td>
+                  <div class="align-items-center">
+                    @for (vehicle of vehicle.fuelLogs; track vehicle)
+                    {
+                    <p class="mb-0 mt-1 fw-semibold">{{ vehicle.litres }}</p>
+                    }
+                  </div>
+                </td>
+                <td>
+                  <div class="align-items-center">
+                    @for (vehicle of vehicle.fuelLogs; track vehicle)
+                    {
+                    <p class="mb-0 mt-1 fw-semibold">{{ vehicle.cost }}</p>
+                    }
+                  </div>
+                </td>
+                <td>
+                  <div class="align-items-center">
+                    @for (vehicle of vehicle.fuelLogs; track vehicle)
+                    {
+                    <p class="mb-0 mt-1 fw-semibold">{{ vehicle.filledBy }}</p>
+                    }
+                  </div>
+                </td>
+                <td>
+                  <div class="align-items-center">
+                    @for (vehicle of vehicle.fuelLogs; track vehicle)
+                    {
+                    <p class="mb-0 mt-1 fw-semibold">{{ vehicle.location }}</p>
+                    }
+                  </div>
+                </td>
+                 <!-- <td>
+                  <div class="align-items-center">
+                    @for (vehicle of vehicle.maintenanceHistory; track vehicle)
+                    {
+                    <p class="mb-0 mt-1 fw-semibold">{{ vehicle.performedBy }}</p>
+                    }
+                  </div>
+                </td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

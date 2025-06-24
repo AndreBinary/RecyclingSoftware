@@ -14,7 +14,7 @@ export let BasicPieChartData = {
         },
       },
     },
-    labels: ['Cricket'],
+    labels: ['Fuel Consumption'],
   };
   
   //Multiple Radialbar Chart
