@@ -55,65 +55,65 @@
           class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
         >
           <span>Registration:</span>
-          <span class="fw-semibold">{{ vehicle?.regNumber || "N/A" }}</span>
+          <span class="fw-semibold">{{ vehicle.regNumber }}</span>
         </div>
         <div
           class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
         >
           <span>Make:</span>
-          <span class="fw-semibold">{{ vehicle?.make || "N/A" }}</span>
+          <span class="fw-semibold">{{ vehicle.make }}</span>
         </div>
         <div
           class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
         >
           <span>Model:</span>
-          <span class="fw-semibold">{{ vehicle?.model || "N/A" }}</span>
+          <span class="fw-semibold">{{ vehicle.model }}</span>
         </div>
         <div
           class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
         >
           <span>Type:</span>
-          <span class="fw-semibold">{{ vehicle?.type || "N/A" }}</span>
+          <span class="fw-semibold">{{ vehicle.type }}</span>
         </div>
         <div
           class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
         >
           <span>Vin Number:</span>
-          <span class="fw-semibold">{{ vehicle?.vinNumber || "N/A" }}</span>
+          <span class="fw-semibold">{{ vehicle.vinNumber }}</span>
         </div>
         <div
           class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
         >
           <span>Service Interval (KM):</span>
           <span class="fw-semibold">{{
-            vehicle?.serviceInterval || "N/A"
+            vehicle.serviceInterval
           }}</span>
         </div>
         <div
           class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
         >
           <span>Fuel Capacity (L):</span>
-          <span class="fw-semibold">{{ vehicle?.fuelCapacity || "N/A" }}</span>
+          <span class="fw-semibold">{{ vehicle.fuelCapacity }}</span>
         </div>
         <div
           class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
         >
           <span>Current Milage (KM):</span>
-          <span class="fw-semibold">{{ vehicle?.milage || "N/A" }}</span>
+          <span class="fw-semibold">{{ vehicle.milage }}</span>
         </div>
         <div
           class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
         >
           <span>Next Service/Maintenance:</span>
           <span class="fw-semibold">{{
-            vehicle?.nextServiceMaintenance || "N/A"
+            vehicle.nextServiceMaintenance
           }}</span>
         </div>
         <div
           class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
         >
           <span>Status:</span>
-          <span class="fw-semibold">{{ vehicle?.status || "N/A" }}</span>
+          <span class="fw-semibold">{{ vehicle.status }}</span>
         </div>
       </div>
     </div>
@@ -131,7 +131,7 @@
             >
               <span>Full Name:</span>
               <span class="fw-semibold">{{
-                vehicle?.assignedDriver?.name || "N/A"
+                vehicle.assignedDriver.name
               }}</span>
             </div>
             <div
@@ -139,7 +139,7 @@
             >
               <span>Employee No:</span>
               <span class="fw-semibold">{{
-                vehicle?.assignedDriver?.employeeNo || "N/A"
+                vehicle.assignedDriver.employeeNo
               }}</span>
             </div>
             <div
@@ -147,7 +147,7 @@
             >
               <span>License:</span>
               <span class="fw-semibold">{{
-                vehicle?.assignedDriver?.license || "N/A"
+                vehicle.assignedDriver.license
               }}</span>
             </div>
             <div
@@ -155,7 +155,7 @@
             >
               <span>License Expiry Date:</span>
               <span class="fw-semibold">{{
-                vehicle?.assignedDriver?.licenseExp || "N/A"
+                vehicle.assignedDriver.licenseExp
               }}</span>
             </div>
             <div
@@ -163,7 +163,7 @@
             >
               <span>Phone Number:</span>
               <span class="fw-semibold">{{
-                vehicle?.assignedDriver?.phone || "N/A"
+                vehicle.assignedDriver.phone 
               }}</span>
             </div>
           </div>
