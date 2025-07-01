@@ -1,0 +1,359 @@
+@if (isLoading) {
+<div class="text-center py-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <p class="mt-2">Loading Branch Details...</p>
+</div>
+} @else if (branch) {
+<!-- Main Content Area -->
+<div class="row">
+  <div class="col-12">
+    <div class="card custom-card">
+      <div
+        class="card-body d-flex align-items-center justify-content-between flex-wrap gap-3"
+      >
+        <div class="d-flex align-items-center">
+          <div class="avatar avatar-xxl me-3 bg-light rounded">
+            <i
+              class="icon icon-tabler-building-factory-2 fs-1 text-primary"
+            ></i>
+          </div>
+          <div>
+            <h4 class="mb-0 fw-bold">{{ branch.branchName }}</h4>
+            <p class="mb-0 text-muted">
+              Branch Code: {{ branch.code }} | Manager: {{ branch.manager }}
+            </p>
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-light">
+            <i class="ri-download-2-line me-1"></i>Export Report
+          </button>
+          <button class="btn btn-sm btn-primary">
+            <i class="ri-edit-line me-1"></i>Edit Branch
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <span class="d-block mb-1 text-muted">Revenue (MTD)</span>
+        <h4 class="mb-1">
+          {{ branch.revenueMTD | currency : "R" : "symbol" : "1.0-0" }}
+        </h4>
+        <p
+          class="mb-0 fs-12"
+          [ngClass]="getPerformanceClass(branch.revenueVsTarget, 0)"
+        >
+          @if (branch.revenueVsTarget >= 0) {
+          <i class="ri-arrow-up-s-fill"></i> } @else {
+          <i class="ri-arrow-down-s-fill"></i> }
+          {{ branch.revenueVsTarget | number : "1.1-1" }}% vs Target
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <span class="d-block mb-1 text-muted">Profit Margin</span>
+        <h4 class="mb-1">{{ branch.profitMargin }}%</h4>
+        <p
+          class="mb-0 fs-12"
+          [ngClass]="
+            getPerformanceClass(
+              branch.profitMargin,
+              branch.companyAvgProfitMargin
+            )
+          "
+        >
+          @if (branch.profitMargin >= branch.companyAvgProfitMargin) {
+          <i class="ri-arrow-up-s-fill"></i> } @else {
+          <i class="ri-arrow-down-s-fill"></i> } vs
+          {{ branch.companyAvgProfitMargin }}% Co. Avg
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <span class="d-block mb-1 text-muted">On-Time Performance</span>
+        <h4 class="mb-1">{{ branch.onTimePercent }}%</h4>
+        <p class="mb-0 fs-12 text-muted">
+          {{ branch.missedPickups }} Missed Pickups (Today)
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <span class="d-block mb-1 text-muted">Days Since Last Incident</span>
+        <h4 class="mb-1 text-success fw-bold">
+          {{ branch.daysSinceIncident }} Days
+        </h4>
+        <p class="mb-0 fs-12 text-muted">
+          {{ branch.safetyIncidents }} Total Incidents (YTD)
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <ul ngbNav #nav="ngbNav" [(activeId)]="activeId" class="nav-tabs">
+      <li [ngbNavItem]="'overview'">
+        <button ngbNavLink>
+          <i class="ri-dashboard-line me-1 align-middle"></i>Overview
+        </button>
+        <ng-template ngbNavContent>
+          
+          <div class="row">
+            <div class="col-xl-7 col-lg-12 mb-4 mb-xl-0">
+              <div class="card custom-card h-100">
+                <div class="card-header justify-content-between">
+                  <div class="card-title">Performance Over Time</div>
+                </div>
+                <div class="card-body">
+                  <div id="sessions-overview">
+                    <apx-chart
+                      [series]="chartOptions.series"
+                      [chart]="chartOptions.chart"
+                      [xaxis]="chartOptions.xaxis"
+                      [stroke]="chartOptions.stroke"
+                      [tooltip]="chartOptions.tooltip"
+                      [dataLabels]="chartOptions.dataLabels"
+                      [legend]="chartOptions.legend"
+                      [markers]="chartOptions.markers"
+                      [grid]="chartOptions.grid"
+                      [fill]="chartOptions.fill"
+                      [colors]="chartOptions.colors"
+                      [yaxis]="chartOptions.yaxis"
+                    ></apx-chart>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-5 col-lg-12">
+              <div class="card custom-card">
+                <div class="card-header justify-content-between">
+                  <div class="card-title">Tonnage by Waste Type</div>
+                </div>
+                <div class="card-body">
+                  <div class="row g-0">
+                    <div class="col-12 my-auto">
+                      @for (item of branch.tonnageBreakdown; track item.type) {
+                        <span class="d-block mb-3 recent-orders-content delivered fs-13">
+                          {{ item.type }} - <span class="fw-medium">{{ item.tons }}</span>
+                        </span>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'operations'">
+        <button ngbNavLink>
+          <i class="ri-truck-line me-1 align-middle"></i>Operations & Routes
+        </button>
+        <ng-template ngbNavContent>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table text-nowrap table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Route ID</th>
+                    <th>Driver</th>
+                    <th>Status</th>
+                    <th>On-Time %</th>
+                    <th>Fuel Efficiency (MPG)</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (route of branch.routes; track route.id) {
+                  <tr>
+                    <td>
+                      <span class="fw-bold">{{ route.id }}</span>
+                    </td>
+                    <td>{{ route.driver }}</td>
+                    <td>
+                      <span
+                        class="badge"
+                        [ngClass]="{
+                          'bg-success-transparent':
+                            route.status === 'Completed',
+                          'bg-info-transparent': route.status === 'In Progress',
+                          'bg-danger-transparent': route.status === 'Delayed'
+                        }"
+                        >{{ route.status }}</span
+                      >
+                    </td>
+                    <td>{{ route.onTimePercent }}%</td>
+                    <td>{{ route.fuelEfficiency }}</td>
+                    <td>
+                      <a href="javascript:void(0);" class="btn btn-sm btn-light"
+                        >View Route Map</a
+                      >
+                    </td>
+                  </tr>
+                  } @empty {
+                  <tr>
+                    <td colspan="6" class="text-center p-4">
+                      No route data available.
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'financials'">
+        <button ngbNavLink>
+          <i class="ri-money-dollar-circle-line me-1 align-middle"></i
+          >Financials
+        </button>
+        <ng-template ngbNavContent>
+          <div class="card-body">
+            <h5 class="mb-3">Cost Breakdown (MTD)</h5>
+            @for (item of branch.costBreakdown; track item.category) {
+            <div class="mb-3">
+              <div class="d-flex justify-content-between">
+                <span>{{ item.category }}</span>
+                <span>{{
+                  item.cost | currency : "R" : "symbol" : "1.0-0"
+                }}</span>
+              </div>
+              <div class="progress progress-xs mt-1">
+                <div
+                  class="progress-bar"
+                  [style.width.%]="item.percentOfTotal"
+                  [ngClass]="{
+                    'bg-danger':
+                      item.category === 'Maintenance' &&
+                      item.percentOfTotal > 20
+                  }"
+                ></div>
+              </div>
+            </div>
+            }
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'staff_fleet'">
+        <button ngbNavLink>
+          <i class="ri-group-line me-1 align-middle"></i>Staff & Fleet
+        </button>
+        <ng-template ngbNavContent>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-6">
+                <h5 class="mb-3">Staff Roster</h5>
+                <div class="table-responsive">
+                  <table class="table table-sm table-hover mb-0">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Safety Score</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (s of branch.staff; track s.id) {
+                      <tr>
+                        <td>{{ s.name }}</td>
+                        <td>{{ s.role }}</td>
+                        <td>
+                          <span
+                            class="badge"
+                            [ngClass]="getPerformanceClass(s.safetyScore, 90)"
+                            >{{ s.safetyScore }}/100</span
+                          >
+                        </td>
+                      </tr>
+                      } @empty {
+                      <tr>
+                        <td colspan="3" class="text-center p-4">
+                          No staff data available.
+                        </td>
+                      </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <h5 class="mb-3">Vehicle Fleet</h5>
+                <div class="table-responsive">
+                  <table class="table table-sm table-hover mb-0">
+                    <thead>
+                      <tr>
+                        <th>Vehicle ID</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Next Service</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (v of branch.fleet; track v.vehicleId) {
+                      <tr>
+                        <td>{{ v.vehicleId }}</td>
+                        <td>{{ v.type }}</td>
+                        <td>
+                          <span
+                            class="badge"
+                            [ngClass]="{
+                              'bg-success-transparent':
+                                v.status === 'Operational',
+                              'bg-danger-transparent': v.status === 'In Shop',
+                              'bg-warning-transparent':
+                                v.status === 'Due for Service'
+                            }"
+                            >{{ v.status }}</span
+                          >
+                        </td>
+                        <td>{{ v.nextServiceDate }}</td>
+                      </tr>
+                      } @empty {
+                      <tr>
+                        <td colspan="4" class="text-center p-4">
+                          No vehicle data available.
+                        </td>
+                      </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav" class="card mb-0"></div>
+  </div>
+</div>
+
+} @else {
+<!-- This block renders if loading is done but no branch was found -->
+<div class="text-center py-5">
+  <i class="ri-error-warning-line fs-1 text-warning"></i>
+  <h4 class="mt-2">Branch Not Found</h4>
+  <p class="text-muted">
+    Could not find data for branch code: '{{ branchCode }}'
+  </p>
+</div>
+}
