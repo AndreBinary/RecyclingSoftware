@@ -1,5 +1,5 @@
 <!-- Start:: Section-1 -->
-<section class="section ">
+<section class="section">
   <div>
     <div class="row">
       <div class="col-xl-12">
@@ -85,9 +85,7 @@
           class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
         >
           <span>Service Interval (KM):</span>
-          <span class="fw-semibold">{{
-            vehicle.serviceInterval
-          }}</span>
+          <span class="fw-semibold">{{ vehicle.serviceInterval }}</span>
         </div>
         <div
           class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
@@ -105,9 +103,7 @@
           class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
         >
           <span>Next Service/Maintenance:</span>
-          <span class="fw-semibold">{{
-            vehicle.nextServiceMaintenance
-          }}</span>
+          <span class="fw-semibold">{{ vehicle.nextServiceMaintenance }}</span>
         </div>
         <div
           class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
@@ -130,9 +126,7 @@
               class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
             >
               <span>Full Name:</span>
-              <span class="fw-semibold">{{
-                vehicle.assignedDriver.name
-              }}</span>
+              <span class="fw-semibold">{{ vehicle.assignedDriver.name }}</span>
             </div>
             <div
               class="col-md-6 mb-2 d-flex align-items-center justify-content-between"
@@ -163,7 +157,7 @@
             >
               <span>Phone Number:</span>
               <span class="fw-semibold">{{
-                vehicle.assignedDriver.phone 
+                vehicle.assignedDriver.phone
               }}</span>
             </div>
           </div>
@@ -285,48 +279,39 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              @for (vehicle of vehicle.maintenanceHistory; track vehicle) {
+              <tr style="cursor: pointer;">
                 <td>
                   <div class="align-items-center">
-                    @for (vehicle of vehicle.maintenanceHistory; track vehicle)
-                    {
                     <p class="mb-0 mt-1 fw-semibold">{{ vehicle.date }}</p>
-                    }
                   </div>
                 </td>
                 <td>
                   <div class="align-items-center">
-                    @for (vehicle of vehicle.maintenanceHistory; track vehicle)
-                    {
                     <p class="mb-0 mt-1 fw-semibold">{{ vehicle.type }}</p>
-                    }
                   </div>
                 </td>
                 <td>
                   <div class="align-items-center">
-                    @for (vehicle of vehicle.maintenanceHistory; track vehicle)
-                    {
-                    <p class="mb-0 mt-1 fw-semibold">{{ vehicle.description }}</p>
-                    }
+                    <p class="mb-0 mt-1 fw-semibold">
+                      {{ vehicle.description }}
+                    </p>
                   </div>
                 </td>
                 <td>
                   <div class="align-items-center">
-                    @for (vehicle of vehicle.maintenanceHistory; track vehicle)
-                    {
                     <p class="mb-0 mt-1 fw-semibold">{{ vehicle.cost }}</p>
-                    }
                   </div>
                 </td>
-                 <td>
+                <td>
                   <div class="align-items-center">
-                    @for (vehicle of vehicle.maintenanceHistory; track vehicle)
-                    {
-                    <p class="mb-0 mt-1 fw-semibold">{{ vehicle.performedBy }}</p>
-                    }
+                    <p class="mb-0 mt-1 fw-semibold">
+                      {{ vehicle.performedBy }}
+                    </p>
                   </div>
                 </td>
               </tr>
+              }
             </tbody>
           </table>
         </div>
@@ -340,7 +325,6 @@
     <div class="card custom-card overflow-hidden">
       <div class="card-header justify-content-between">
         <div class="card-title">Fuel Logs</div>
-        
       </div>
       <div class="card-body p-0">
         <div class="table-responsive">
@@ -355,48 +339,34 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                 <td>
+              @for (vehicle of vehicle.fuelLogs; track vehicle) {
+              <tr style="cursor: pointer;">
+                <td>
                   <div class="align-items-center">
-                    @for (vehicle of vehicle.fuelLogs; track vehicle)
-                    {
                     <p class="mb-0 mt-1 fw-semibold">{{ vehicle.date }}</p>
-                    }
                   </div>
                 </td>
                 <td>
                   <div class="align-items-center">
-                    @for (vehicle of vehicle.fuelLogs; track vehicle)
-                    {
                     <p class="mb-0 mt-1 fw-semibold">{{ vehicle.litres }}</p>
-                    }
                   </div>
                 </td>
                 <td>
                   <div class="align-items-center">
-                    @for (vehicle of vehicle.fuelLogs; track vehicle)
-                    {
                     <p class="mb-0 mt-1 fw-semibold">{{ vehicle.cost }}</p>
-                    }
                   </div>
                 </td>
                 <td>
                   <div class="align-items-center">
-                    @for (vehicle of vehicle.fuelLogs; track vehicle)
-                    {
                     <p class="mb-0 mt-1 fw-semibold">{{ vehicle.filledBy }}</p>
-                    }
                   </div>
                 </td>
                 <td>
                   <div class="align-items-center">
-                    @for (vehicle of vehicle.fuelLogs; track vehicle)
-                    {
                     <p class="mb-0 mt-1 fw-semibold">{{ vehicle.location }}</p>
-                    }
                   </div>
                 </td>
-                 <!-- <td>
+                <!-- <td>
                   <div class="align-items-center">
                     @for (vehicle of vehicle.maintenanceHistory; track vehicle)
                     {
@@ -405,6 +375,7 @@
                   </div>
                 </td> -->
               </tr>
+              }
             </tbody>
           </table>
         </div>

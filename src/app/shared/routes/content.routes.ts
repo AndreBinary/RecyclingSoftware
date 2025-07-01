@@ -6,6 +6,7 @@ import { crmRoutingModule } from '../../components/dashboards/crm/crmdashboard.r
 import { inventoryRoutingModule } from '../../components/dashboards/inventory/inventorydashboard.routes';
 import { fleetManagementRoutingModule } from '../../components/dashboards/fleet-management/fleet-managementdashboard.routes';
 import { ordersRoutingModule } from '../../components/dashboards/orders/ordersdashboard.routes';
+import { branchesRoutingModule } from '../../components/dashboards/branches/branches.routes';
 
 
 
@@ -16,7 +17,8 @@ import { ordersRoutingModule } from '../../components/dashboards/orders/ordersda
    ...crmRoutingModule.routes,
    ...inventoryRoutingModule.routes,
    ...fleetManagementRoutingModule.routes,
-   ...ordersRoutingModule.routes
+   ...ordersRoutingModule.routes,
+   ...branchesRoutingModule.routes
   ]}
 ];
 
