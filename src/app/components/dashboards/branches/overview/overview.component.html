@@ -1,0 +1,240 @@
+<!-- Start:: row-1 -->
+<div class="row">
+  <!-- Total Branches -->
+  <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12">
+    <div class="card custom-card">
+      <div class="card-body p-2">
+        <div class="d-flex align-items-center justify-content-between bg-primary-transparent p-3 rounded flex-wrap gap-3">
+          <div class="flex-fill">
+            <span class="d-block mb-2 text-default">Total Branches</span>
+            <div class="d-flex align-items-end">
+              <h4 class="fw-medium mb-0 lh-1">{{ allBranchData.length }}</h4>
+            </div>
+          </div>
+          <div class="main-card-icon primary">
+            <div class="avatar avatar-lg bg-primary-transparent border border-primary border-opacity-10">
+              <div class="avatar avatar-sm svg-white">
+                <i class="icon icon-tabler-building-factory-2"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  <!-- Total Revenue (MTD) -->
+  <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12">
+    <div class="card custom-card">
+      <div class="card-body p-2">
+        <div class="d-flex align-items-center justify-content-between bg-success-transparent p-3 rounded flex-wrap gap-3">
+          <div class="flex-fill">
+            <span class="d-block mb-2 text-default">Total Revenue</span>
+            <div class="d-flex align-items-end">
+              <h4 class="fw-medium mb-0 lh-1">{{ totalRevenue | currency:'R':'symbol':'1.0-0' }}</h4>
+            </div>
+          </div>
+          <div class="main-card-icon success">
+            <div class="avatar avatar-lg bg-success-transparent border border-success border-opacity-10">
+              <div class="avatar avatar-sm svg-white">
+                <i class="icon icon-tabler-cash"></i> <!-- CHANGED: from truck-delivery to cash -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Total Tonnage (MTD)  -->
+  <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12">
+    <div class="card custom-card">
+      <div class="card-body p-2">
+        <div class="d-flex align-items-center justify-content-between bg-secondary-transparent p-3 rounded flex-wrap gap-3">
+          <div class="flex-fill">
+            <span class="d-block mb-2 text-default">Total Tonnage (MTD)</span>
+            <div class="d-flex align-items-end">
+              <h4 class="fw-medium mb-0 lh-1">{{ totalTonnage }}</h4>
+              <span class="ms-1">tons</span>
+            </div>
+          </div>
+          <div class="main-card-icon secondary">
+            <div class="avatar avatar-lg bg-secondary-transparent border border-secondary border-opacity-10">
+              <div class="avatar avatar-sm svg-white">
+                <i class="icon icon-tabler-scale"></i> <!-- CHANGED: from gas-station to scale -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Total Safety Incidents  -->
+  <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12">
+    <div class="card custom-card">
+      <div class="card-body p-2">
+        <div class="d-flex align-items-center justify-content-between bg-orange-transparent p-3 rounded flex-wrap gap-3">
+          <div class="flex-fill">
+            <span class="d-block mb-2 text-default">Total Safety Incidents</span>
+            <div class="d-flex align-items-end">
+              <h4 class="fw-medium mb-0 lh-1">{{ totalIncidents }}</h4>
+            </div>
+          </div>
+          <div class="main-card-icon orange">
+            <div class="avatar avatar-lg bg-orange-transparent border border-orange border-opacity-10">
+              <div class="avatar avatar-sm svg-white">
+                <i class="icon icon-tabler-alert-triangle"></i> <!-- CHANGED: from tool to alert-triangle -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End:: row-1 -->
+
+<!-- Start:: row-3 -->
+<div class="row">
+  <div class="col-xxl-12 col-xl-12">
+    <div class="card custom-card">
+      <div class="card-header justify-content-between">
+        <div class="card-title">Branches</div>
+        <div class="d-flex">
+          <button (click)="openAddModal(content)" class="btn btn-sm btn-primary btn-wave waves-light">
+            <i class="ri-add-line fw-medium align-middle me-1"></i>Add Branch
+          </button>
+          
+          <div ngbDropdown class="dropdown ms-2">
+            <button ngbDropdownToggle class="btn btn-icon btn-secondary-light btn-sm btn-wave waves-light no-caret" type="button">
+              <i class="ti ti-filter"></i>
+            </button>
+            <ul ngbDropdownMenu>
+              <li><a class="dropdown-item" (click)="applyFilter('All')">All</a></li>
+              <li><a class="dropdown-item" (click)="applyFilter('Active')">Active</a></li>
+              <li><a class="dropdown-item" (click)="applyFilter('Inactive')">Inactive</a></li>
+              <li><a class="dropdown-item" (click)="applyFilter('Maintenance')">Maintenance</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table text-nowrap table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Branch Name</th>
+                <th scope="col">Status</th> 
+                <th scope="col">Overall Score</th>
+                <th scope="col">Profit Margin</th>
+                <th scope="col">On-Time %</th>
+                <th scope="col">CSAT</th>
+                <th scope="col">Safety Incidents</th>
+                <th scope="col">Actions</th> 
+              </tr>
+            </thead>
+            <tbody>
+              @for (branch of filteredBranchData | slice: (page-1) * pageSize : page * pageSize; track branch.code) {
+                <tr class="task-list">
+                  <td [routerLink]="['/branches/branch', branch.code]" style="cursor: pointer;">
+                    <span class="fw-medium d-block">{{ branch.branchName }}</span>
+                    <span class="text-muted fs-12">{{ branch.code }}</span>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="{
+                      'bg-success-transparent': branch.status === 'Active',
+                      'bg-danger-transparent': branch.status === 'Inactive',
+                      'bg-warning-transparent': branch.status === 'Maintenance'
+                    }">{{ branch.status }}</span>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="fw-bold me-2">{{ branch.overallScore }}/100</span>
+                      <div class="progress progress-xs flex-fill">
+                        <div class="progress-bar" [style.width.%]="branch.overallScore"
+                          [ngClass]="{
+                            'bg-success': branch.overallScore >= 80,
+                            'bg-warning': branch.overallScore > 60 && branch.overallScore < 80,
+                            'bg-danger': branch.overallScore <= 60
+                          }"></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{ branch.profitMargin }}%</td>
+                  <td>{{ branch.onTimePercent }}%</td>
+                  <td>{{ branch.csat }}/10</td>
+                  <td>{{ branch.safetyIncidents }}</td>
+                  <td>
+                    <div class="hstack gap-2 fs-15">
+                      <a href="javascript:void(0);" (click)="openEditModal(content, branch)" class="btn btn-icon btn-sm btn-info-light"><i class="ri-edit-line"></i></a>
+                      <a href="javascript:void(0);" (click)="deleteBranch(branch.code)" class="btn btn-icon btn-sm btn-danger-light"><i class="ri-delete-bin-line"></i></a>
+                    </div>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="8" class="text-center py-4">No branches found.</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer border-top-0">
+        <div class="d-flex align-items-center">
+            <p class="mb-0 text-muted">Showing {{ (page-1) * pageSize + 1 }} to {{ Math.min(page * pageSize, collectionSize) }} of {{ collectionSize }} entries</p>
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" class="ms-auto">
+            </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End:: row-3 -->
+
+<!-- Start::Add/Edit Branch Modal -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title">{{ editMode ? 'Edit Branch' : 'Add Branch' }}</h6>
+    <button (click)="modal.dismiss('Cross click')" type="button" class="btn-close" aria-label="Close"></button>
+  </div>
+  <form [formGroup]="branchForm" (ngSubmit)="onFormSubmit()">
+    <div class="modal-body px-4">
+      <div class="row gy-3">
+        <div class="col-xl-6">
+          <label class="form-label">Branch Name</label>
+          <input type="text" class="form-control" placeholder="Branch Name" formControlName="branchName" 
+            [ngClass]="{ 'is-invalid': f['branchName'].touched && f['branchName'].errors }">
+          @if(f['branchName'].touched && f['branchName'].errors?.['required']) {
+            <div class="invalid-feedback">Branch name is required.</div>
+          }
+        </div>
+        <div class="col-xl-6">
+          <label class="form-label">Branch Code</label>
+          <input type="text" class="form-control" placeholder="Branch Code" formControlName="code"
+            [ngClass]="{ 'is-invalid': f['code'].touched && f['code'].errors }">
+            @if(f['code'].touched && f['code'].errors?.['required']) {
+              <div class="invalid-feedback">Branch code is required.</div>
+            }
+        </div>
+        <div class="col-xl-6">
+          <label class="form-label">Manager</label>
+          <input type="text" class="form-control" placeholder="Manager Name" formControlName="manager">
+        </div>
+        <div class="col-xl-6">
+          <label class="form-label">Status</label>
+          <select class="form-control" formControlName="status">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+            <option value="Maintenance">Maintenance</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button (click)="modal.dismiss('Cancel click')" type="button" class="btn btn-light">Cancel</button>
+      <button type="submit" class="btn btn-primary">{{ editMode ? 'Save Changes' : 'Add Branch' }}</button>
+    </div>
+  </form>
+</ng-template>

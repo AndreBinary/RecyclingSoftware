@@ -113,12 +113,19 @@ export class NavService implements OnDestroy {
             { path: '/crm/leads', title: 'Leads', type: 'link', dirchange: false },
           ],
         },
-        // { path: '/vehicles', title: 'Vehicles', type: 'link', dirchange: false },
-        { path: '/fleet-management', title: 'Fleet Management', type: 'sub', dirchange: false, children: [
-          { path: '/fleet-management/overview', title: 'Overview', type: 'link', dirchange: false },
-          { path: '/fleet-management/vehicles', title: 'Vehicles', type: 'link', dirchange: false },
-          // { path: '/fleet-management/vehicles/:id', title: 'Vehicle Details', type: 'link', dirchange: false },
-        ] },
+        {
+          path: '/fleet-management', title: 'Fleet Management', type: 'sub', dirchange: false, children: [
+            { path: '/fleet-management/overview', title: 'Overview', type: 'link', dirchange: false },
+            { path: '/fleet-management/vehicles', title: 'Vehicles', type: 'link', dirchange: false },
+          ]
+        },
+
+        {
+          path: '/branches', title: 'branches', type: 'sub', dirchange: false, children: [
+            { path: '/branches/overview', title: 'Overview', type: 'link', dirchange: false },
+
+          ]
+        },
         { path: '/inventory', title: 'Inventory', type: 'link', dirchange: false },
       ],
     },

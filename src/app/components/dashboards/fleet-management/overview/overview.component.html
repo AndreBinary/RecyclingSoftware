@@ -426,14 +426,14 @@
               </tr>
             </thead>
             <tbody>
-                            @for (item of vehicleTableData; track item.Vehicle) {
+              @for (item of vehicleTableData; track item.Vehicle) {
 
               <tr>
                 <td>
                   <div class="d-flex">
                     <div class="ms-2">
                       <p class="fw-semibold mb-0 d-flex align-items-center">
-                        <a href="javascript:void(0);">{{item.vehicle}}</a>
+                        <a href="javascript:void(0);">{{ item.vehicle }}</a>
                       </p>
                     </div>
                   </div>
@@ -446,14 +446,15 @@
                       </span>
                     </div>
                     <div class="align-items-center">
-                      <p class="mb-0 fw-semibold">{{item.driver}}</p>
+                      <p class="mb-0 fw-semibold">{{ item.driver }}</p>
                     </div>
                   </div>
                 </td>
                 <td>
-                  <p class="mb-0 fw-semibold">{{item.status}}</p>
+                  <p class="mb-0 fw-semibold">{{ item.status }}</p>
                 </td>
-              </tr>}
+              </tr>
+              }
             </tbody>
           </table>
         </div>
