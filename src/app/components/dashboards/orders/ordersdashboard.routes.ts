@@ -3,10 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 export const admin: Routes = [
     {path:'',children:[ {
-        path: 'sales',
+        path: 'orders',
         loadComponent: () =>
-          import('../sales/sales.component').then((m) => m.SalesComponent),
-          title: 'Jays Recycling - Sales'
+          import('../orders/orders.component').then((m) => m.OrdersComponent),
+          title: 'Jays Recycling - Orders'
       },
     ]
       }
@@ -15,6 +15,6 @@ export const admin: Routes = [
     imports: [RouterModule.forChild(admin)],
     exports: [RouterModule],
   })
-  export class salesRoutingModule {
+  export class ordersRoutingModule {
     static routes = admin;
   }
