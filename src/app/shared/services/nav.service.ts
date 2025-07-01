@@ -104,7 +104,8 @@ export class NavService implements OnDestroy {
       active: false,
       dirchange: false,
       children: [
-        { path: '/sales', title: 'Sales', type: 'link', dirchange: false },
+        //{ path: '/sales', title: 'Sales', type: 'link', dirchange: false },
+        { path: '/orders', title: 'Orders', type: 'link', dirchange: false },
         {
           path: '/crm', title: 'CRM', type: 'sub', dirchange: false, children: [
             { path: '/crm/companies', title: 'Companies', type: 'link', dirchange: false },

@@ -70,7 +70,7 @@ export class LoginComponent {
      this.authservice
        .loginWithEmail(this.email, this.password)
        .then(() => {
-         this.router.navigate(['/sales']);
+         this.router.navigate(['/orders']);
          console.clear();
        })
        .catch((_error: any) => {
@@ -89,7 +89,7 @@ export class LoginComponent {
     this.loginForm.controls['username'].value === 'spruko@admin.com' &&
     this.loginForm.controls['password'].value === 'sprukoadmin'
   ) {
-    this.router.navigate(['/sales']);
+    this.router.navigate(['/orders']);
     this.toastr.success('login successful','Mamix', {
       timeOut: 3000,
       positionClass: 'toast-top-right',
