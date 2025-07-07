@@ -63,3 +63,104 @@ export  const MOCK_DATA: { [key: string]: BranchDetail } = {
         ]
       }
     };
+
+
+export let PerformanceOverTimeChartData: any = {
+    series: [{
+        name: 'Revenue',
+        type: "area",
+        data: [125000, 135000, 142000, 158000, 150000, 165000, 180000, 172000, 168000, 190000, 210000, 205000],
+    }, {
+        name: "Profit",
+        type: "line",
+        data: [22000, 24000, 25000, 29000, 27500, 31000, 35000, 33000, 31500, 38000, 42000, 41000]
+    }],
+    chart: {
+        height: 338,
+        type: 'line',
+        toolbar: {
+            show: false
+        },
+        dropShadow: {
+            enabled: true,
+            enabledOnSeries: undefined,
+            top: 7,
+            left: 0,
+            blur: 3,
+            color: ["var(--primary-color)", "var(--success-color)"],
+            opacity: 0.15,
+        },
+    },
+    grid: {
+        borderColor: '#f1f1f1',
+        strokeDashArray: 3
+    },
+    dataLabels: {
+        enabled: false
+    },
+    stroke: {
+        width: [2, 2.5], 
+        curve: "smooth",
+        dashArray: [0, 4], 
+    },
+    legend: {
+        show: true,
+        position: 'top', 
+        horizontalAlign: 'right',
+        height: 20,
+        offsetY: -5,
+    },
+    colors: ["var(--primary-color)", "var(--success-color)"],
+    yaxis: {
+        title: {
+            text: 'Amount', 
+            style: {
+                color: '#adb5be',
+                fontSize: '14px',
+                fontFamily: 'poppins, sans-serif',
+                fontWeight: 500,
+            },
+        },
+        labels: {
+            formatter: function (val: number) {
+                return "R " + (val / 1000) + 'K';
+            }
+        }
+    },
+    xaxis: {
+        type: "category", 
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        axisBorder: {
+            show: false,
+        },
+        axisTicks: {
+            show: false,
+        },
+        labels: {
+            rotate: 0, 
+            style: {
+                colors: "#8c9097",
+                fontSize: '11px',
+                fontWeight: 500,
+            },
+        }
+    },
+    fill: {
+        type: 'gradient',
+        gradient: {
+            shadeIntensity: 1,
+            opacityFrom: 0.4,
+            opacityTo: 0.1,
+            stops: [0, 90, 100]
+        }
+    },
+    tooltip: {
+        shared: true,
+        intersect: false,
+        y: {
+            formatter: function (val: number) {
+                return "R " + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+        }
+    },
+};
