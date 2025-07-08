@@ -7,6 +7,7 @@ import { inventoryRoutingModule } from '../../components/dashboards/inventory/in
 import { fleetManagementRoutingModule } from '../../components/dashboards/fleet-management/fleet-managementdashboard.routes';
 import { ordersRoutingModule } from '../../components/dashboards/orders/ordersdashboard.routes';
 import { branchesRoutingModule } from '../../components/dashboards/branches/branches.routes';
+import { driversRoutingModule } from '../../components/dashboards/Drivers/driversdashboard.routes';
 
 
 
@@ -18,7 +19,8 @@ import { branchesRoutingModule } from '../../components/dashboards/branches/bran
    ...inventoryRoutingModule.routes,
    ...fleetManagementRoutingModule.routes,
    ...ordersRoutingModule.routes,
-   ...branchesRoutingModule.routes
+   ...branchesRoutingModule.routes,
+   ...driversRoutingModule.routes
   ]}
 ];
 

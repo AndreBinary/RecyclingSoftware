@@ -1,0 +1,97 @@
+<div class="dispatch-board-container">
+  <!-- Column 1: Unassigned Orders -->
+  <div class="dispatch-column">
+    <div class="column-header bg-light">
+      <h5 class="mb-0">Unassigned Orders</h5>
+      <span class="badge bg-secondary-transparent">{{ unassignedOrders.length }} Jobs</span>
+    </div>
+
+    <div
+      cdkDropList
+      id="unassignedList"
+      [cdkDropListData]="unassignedOrders"
+      class="order-list"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListConnectedTo]="allDropLists">
+      
+      @for (order of unassignedOrders; track order.id) {
+        <div class="order-card" cdkDrag>
+          <div class="order-card-header">
+            <span class="fw-bold">{{ order.id }}</span>
+            <span class="badge" [ngClass]="{
+              'bg-primary-transparent': order.serviceType === 'Roll-Off Delivery',
+              'bg-info-transparent': order.serviceType === 'Residential Pickup',
+              'bg-secondary-transparent': order.serviceType === 'Commercial Dumpster',
+              'bg-danger-transparent': order.serviceType === 'Hazardous Waste'
+            }">{{ order.serviceType }}</span>
+          </div>
+          <div class="order-card-body">
+            <p class="mb-1 fw-medium">{{ order.customerName }}</p>
+            <p class="mb-0 fs-13 text-muted"><i class="ri-map-pin-line me-1"></i>{{ order.address }}</p>
+          </div>
+          <div class="order-card-footer">
+            <i class="ri-time-line me-1"></i>{{ order.estimatedHours }} hrs
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-list-placeholder">All jobs assigned!</div>
+      }
+    </div>
+  </div>
+
+  <!-- Columns 2+: Drivers -->
+  @for (driver of drivers; track driver.id) {
+    <div class="dispatch-column">
+      <div class="column-header">
+        <div class="d-flex align-items-center justify-content-between w-100">
+          <div>
+            <h5 class="mb-0">{{ driver.name }}</h5>
+            <span class="text-muted fs-13">Vehicle: {{ driver.vehicleId }}</span>
+          </div>
+          <span class="badge bg-primary-transparent">{{ driver.assignedOrders.length }} Jobs</span>
+        </div>
+        <div class="workload-bar mt-2">
+            <div class="d-flex justify-content-between">
+                <span class="fs-11 text-muted">{{ getScheduledHours(driver) }} / {{ driver.shiftHours }} hrs</span>
+                <span class="fs-11 text-muted">{{ getWorkloadPercent(driver) | number:'1.0-0' }}%</span>
+            </div>
+            <div class="progress progress-xs mt-1">
+                <div class="progress-bar" [style.width.%]="getWorkloadPercent(driver)" [ngClass]="{'bg-danger': getWorkloadPercent(driver) > 100, 'bg-success': getWorkloadPercent(driver) > 80}"></div>
+            </div>
+        </div>
+      </div>
+
+      <div
+        cdkDropList
+        [id]="'driverList-' + driver.id"
+        [cdkDropListData]="driver.assignedOrders"
+        class="order-list"
+        (cdkDropListDropped)="drop($event)"
+        [cdkDropListConnectedTo]="allDropLists">
+
+        @for (order of driver.assignedOrders; track order.id) {
+          <div class="order-card" cdkDrag>
+            <div class="order-card-header">
+                <span class="fw-bold">{{ order.id }}</span>
+                <span class="badge" [ngClass]="{
+                  'bg-primary-transparent': order.serviceType === 'Roll-Off Delivery',
+                  'bg-info-transparent': order.serviceType === 'Residential Pickup',
+                  'bg-secondary-transparent': order.serviceType === 'Commercial Dumpster',
+                  'bg-danger-transparent': order.serviceType === 'Hazardous Waste'
+                }">{{ order.serviceType }}</span>
+            </div>
+            <div class="order-card-body">
+              <p class="mb-1 fw-medium">{{ order.customerName }}</p>
+              <p class="mb-0 fs-13 text-muted"><i class="ri-map-pin-line me-1"></i>{{ order.address }}</p>
+            </div>
+            <div class="order-card-footer">
+              <i class="ri-time-line me-1"></i>{{ order.estimatedHours }} hrs
+            </div>
+          </div>
+        } @empty {
+          <div class="empty-list-placeholder">Drop jobs here to assign</div>
+        }
+      </div>
+    </div>
+  }
+</div>

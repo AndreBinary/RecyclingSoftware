@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgClass, CurrencyPipe, DecimalPipe } from '@angular/common';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { MOCK_DATA } from '../../../../shared/data/branch/branchData';
-import { SessionsOverviewChartData } from '../../../../shared/data/dashboard_chartData/analyticscharts.data';
+import { MOCK_DATA, PerformanceOverTimeChartData } from '../../../../shared/data/branch/branchData';
 import { NgApexchartsModule } from 'ng-apexcharts';
 
 export interface Route {
@@ -73,7 +72,7 @@ export class BranchDetailsComponent implements OnInit {
   branch: BranchDetail | undefined;
   isLoading = true;
   activeId: string = 'overview';
-    public chartOptions = SessionsOverviewChartData;
+    public chartOptions = PerformanceOverTimeChartData;
 
 
   constructor(private route: ActivatedRoute) { }

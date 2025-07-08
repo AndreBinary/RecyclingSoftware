@@ -122,12 +122,20 @@ export class NavService implements OnDestroy {
         },
 
         {
-          path: '/branches', title: 'branches', type: 'sub', dirchange: false, children: [
+          path: '/branches', title: 'Branches', type: 'sub', dirchange: false, children: [
             { path: '/branches/overview', title: 'Overview', type: 'link', dirchange: false },
 
           ]
         },
         { path: '/inventory', title: 'Inventory', type: 'link', dirchange: false },
+
+        {
+          path: '/drivers', title: 'Drivers', type: 'sub', dirchange: false, children: [
+            { path: '/schedule-plan', title: 'Schedule Plan', type: 'link', dirchange: false },
+
+          ]
+        },
+
       ],
     },
   ];
