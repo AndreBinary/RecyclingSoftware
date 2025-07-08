@@ -1,0 +1,99 @@
+// Main container for the Kanban-style board
+.dispatch-board-container {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto; // Allows horizontal scrolling for many drivers
+  padding-bottom: 1rem; // Prevents scrollbar from covering content
+  min-height: 60vh;
+}
+
+// Styling for each vertical column (e.g., "Unassigned" or a driver)
+.dispatch-column {
+  flex: 0 0 320px; // Each column has a fixed width, preventing resizing
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e9ecef;
+}
+
+// Header section of each column
+.column-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+  background-color: #fff;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+// The main list area where cards are dropped
+.order-list {
+  padding: 0.75rem;
+  flex-grow: 1; // Allows the list to fill available vertical space
+  min-height: 400px; // Ensures drop zones are always available, even when empty
+  transition: background-color 0.2s ease-in-out;
+}
+
+// Visual feedback when an item is being dragged over a drop list
+.cdk-drop-list-dragging .order-list {
+  background-color: #e9ecef; // Highlight potential drop zones
+}
+
+// Styling for each individual draggable order card
+.order-card {
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  border-left: 4px solid #007bff; // Accent color on the left
+  border-radius: 0.375rem;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  cursor: grab; // Indicates the item is draggable
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  .order-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .order-card-body {
+    margin-bottom: 0.5rem;
+  }
+  .order-card-footer {
+    font-size: 0.8rem;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+  }
+}
+
+// Placeholder text for empty lists
+.empty-list-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #adb5bd;
+  border: 2px dashed #dee2e6;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+// Styling for the clone of the item that is being dragged (the "preview")
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+// Workload progress bar in the driver's column header
+.workload-bar {
+  .progress {
+    height: 6px;
+    background-color: #e9ecef;
+  }
+}

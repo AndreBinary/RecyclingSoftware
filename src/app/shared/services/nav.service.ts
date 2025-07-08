@@ -129,6 +129,14 @@ export class NavService implements OnDestroy {
           ]
         },
         { path: '/inventory', title: 'Inventory', type: 'link', dirchange: false },
+
+        {
+          path: '/drivers', title: 'Drivers', type: 'sub', dirchange: false, children: [
+            { path: '/schedule-plan', title: 'Schedule Plan', type: 'link', dirchange: false },
+
+          ]
+        },
+
       ],
     },
   ];
