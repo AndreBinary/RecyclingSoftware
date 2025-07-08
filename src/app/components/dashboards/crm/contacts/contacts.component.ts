@@ -4,6 +4,8 @@ import { NgbOffcanvas, NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { SharedModule } from '../../../../shared/shared.module';
+import { GlobalSearchService } from '../../../../shared/global-search.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-contacts',
   standalone: true,
@@ -21,16 +23,41 @@ export class ContactsComponent {
  selectedSimpleItem1='Select Tag';
  simpleItems1:any=[]
 
+ filteredInvoiceData: any[] = [];
+ globalSearchSub: Subscription;
 
+ constructor(private offcanvasService: NgbOffcanvas, private modalService: NgbModal, private globalSearch: GlobalSearchService) {
+    this.globalSearchSub = this.globalSearch.searchTerm$.subscribe(term => {
+      this.filterContacts(term);
+    });
+  }
 
-ngOnInit(): void {
- this.simpleItems=['Blog Articles','daily Mail','Organic Search','Socail media'];
- this.simpleItems1=['Patner','New lead','LostCustomer','Hot Lead','Customer'];
-}
+  ngOnInit(): void {
+    this.filteredInvoiceData = this.InvoiceData.slice();
+  }
+
+  ngOnDestroy() {
+    if (this.globalSearchSub) this.globalSearchSub.unsubscribe();
+  }
+
+  filterContacts(term: string) {
+    if (!term) {
+      this.filteredInvoiceData = this.InvoiceData.slice();
+    } else {
+      const filter = term.toLowerCase();
+      this.filteredInvoiceData = this.InvoiceData.filter(item =>
+        (item.name && item.name.toLowerCase().includes(filter)) ||
+        (item.mail && item.mail.toLowerCase().includes(filter)) ||
+        (item.Phone && item.Phone.toLowerCase().includes(filter)) ||
+        (item.Company && item.Company.toLowerCase().includes(filter)) ||
+        (item.Source2 && item.Source2.toLowerCase().includes(filter)) ||
+        (item.tag1 && item.tag1.toLowerCase().includes(filter)) ||
+        (item.tag2 && item.tag2.toLowerCase().includes(filter))
+      );
+    }
+  }
 
  closeResult!: string;
-
- constructor(private offcanvasService: NgbOffcanvas, private modalService: NgbModal,) {}
 
  openWindowCustomClass(content: any) {
    this.modalService.open(content, { windowClass: 'dark-modal'  });

@@ -332,7 +332,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (alert of alertTableData; track alert.Vehicle) {
+              @for (alert of pagedAlertTableData; track alert.vehicle) {
               <tr>
                 <td>
                   <div class="d-flex align-items-center">
@@ -369,6 +369,27 @@
               }
             </tbody>
           </table>
+        </div>
+      </div>
+      <div class="card-footer border-top-0">
+        <div class="d-flex align-items-center">
+          <label for="alertPageSize" class="me-2 mb-0">Page Size:</label>
+          <select id="alertPageSize" class="form-select form-select-sm w-auto me-3" [ngModel]="alertPageSize" (ngModelChange)="setAlertPageSize($event)">
+            <option *ngFor="let size of [5, 10, 20, 50]" [value]="size">{{ size }}</option>
+          </select>
+          <nav aria-label="Page navigation">
+            <ul class="pagination mb-0 float-end">
+              <li class="page-item" [class.disabled]="alertCurrentPage === 1">
+                <a class="page-link" href="#" (click)="setAlertPage(alertCurrentPage - 1, $event)">Previous</a>
+              </li>
+              <li class="page-item" *ngFor="let page of alertTotalPagesArray" [class.active]="page === alertCurrentPage">
+                <a class="page-link" href="#" (click)="setAlertPage(page, $event)">{{ page }}</a>
+              </li>
+              <li class="page-item" [class.disabled]="alertCurrentPage === alertTotalPages">
+                <a class="page-link" href="#" (click)="setAlertPage(alertCurrentPage + 1, $event)">Next</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
@@ -426,7 +447,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (item of vehicleTableData; track item.Vehicle) {
+              @for (item of pagedVehicleTableData; track item.vehicle) {
 
               <tr>
                 <td>
@@ -457,6 +478,27 @@
               }
             </tbody>
           </table>
+        </div>
+      </div>
+      <div class="card-footer border-top-0">
+        <div class="d-flex align-items-center">
+          <label for="pageSize" class="me-2 mb-0">Page Size:</label>
+          <select id="pageSize" class="form-select form-select-sm w-auto me-3" [ngModel]="pageSize" (ngModelChange)="setPageSize($event)">
+            <option *ngFor="let size of [5, 10, 20, 50]" [value]="size">{{ size }}</option>
+          </select>
+          <nav aria-label="Page navigation">
+            <ul class="pagination mb-0 float-end">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" href="#" (click)="setPage(currentPage - 1, $event)">Previous</a>
+              </li>
+              <li class="page-item" *ngFor="let page of totalPagesArray" [class.active]="page === currentPage">
+                <a class="page-link" href="#" (click)="setPage(page, $event)">{{ page }}</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" href="#" (click)="setPage(currentPage + 1, $event)">Next</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>

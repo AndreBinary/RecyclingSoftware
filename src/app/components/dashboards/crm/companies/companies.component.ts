@@ -3,6 +3,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapseModule, NgbModal, NgbModule, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from '../../../../shared/shared.module';
+import { GlobalSearchService } from '../../../../shared/global-search.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-companies',
@@ -21,7 +23,15 @@ export class CompaniesComponent {
     selectedSimpleItem1 = 'Company Size';
     simpleItems1:any = [];
 
-    constructor(private offcanvasService: NgbOffcanvas,private modalService: NgbModal) {}
+    filteredInvoiceData: any[] = [];
+    globalSearchSub: Subscription;
+
+    constructor(private offcanvasService: NgbOffcanvas, private modalService: NgbModal, private globalSearch: GlobalSearchService) {
+      this.globalSearchSub = this.globalSearch.searchTerm$.subscribe(term => {
+        this.filterCompanies(term);
+      });
+    }
+
     openWindowCustomClass(content: any) {
       this.modalService.open(content, { windowClass: 'dark-modal' });
     }
@@ -31,8 +41,26 @@ export class CompaniesComponent {
     ngOnInit(): void {
       this.simpleItems = ['Select Industry','Education',' HealthCare','Information Technology','Logistics'];
       this.simpleItems1 = ['Company Size','Corporate',' Large Enterprise','Micro Business','LogisMedium size'];
+      this.filteredInvoiceData = this.InvoiceData.slice();
     }
-  
+    ngOnDestroy() {
+      if (this.globalSearchSub) this.globalSearchSub.unsubscribe();
+    }
+    filterCompanies(term: string) {
+      if (!term) {
+        this.filteredInvoiceData = this.InvoiceData.slice();
+      } else {
+        const filter = term.toLowerCase();
+        this.filteredInvoiceData = this.InvoiceData.filter(item =>
+          (item.name && item.name.toLowerCase().includes(filter)) ||
+          (item.mail && item.mail.toLowerCase().includes(filter)) ||
+          (item.Phone && item.Phone.toLowerCase().includes(filter)) ||
+          (item.Company && item.Company.toLowerCase().includes(filter)) ||
+          (item.industry && item.industry.toLowerCase().includes(filter)) ||
+          (item.badge && item.badge.toLowerCase().includes(filter))
+        );
+      }
+    }
   
     InvoiceData = [
       {

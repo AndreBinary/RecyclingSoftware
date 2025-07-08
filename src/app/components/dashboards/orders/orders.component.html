@@ -1,6 +1,6 @@
 <div class="row mb-3">
     <div class="col-12">
-        <button (click)="addOrder(OrderDetailsModal)" class="btn btn-primary btn-sm float-end"><i class="fa fa-plus"></i>Add Order</button>
+        <button (click)="addOrder(OrderDetailsModal)" class="btn btn-primary btn-sm float-end"><i class="fa fa-plus"></i> Add Order</button>
     </div>
 </div> 
 <div class="row mb-3">
@@ -16,7 +16,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let order of orders;let i = index">
+        <tr *ngFor="let order of filteredOrders;let i = index">
             <td>{{ order.id }}</td>
             <td>{{ order.customer_name }}</td>
             <td>{{ order.order_date | date:'short' }}</td>
@@ -38,75 +38,139 @@
 </table>
 </div>
 
-<ng-template #OrderDetailsModal let-modal let-c="close">
+<ng-template #OrderDetailsModal let-c="close">
   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel1">{{ is_view_edit_add === 1 ? 'Add Order' : is_view_edit_add === 2 ? 'View Order' : is_view_edit_add === 3 ? 'Edit Order' : 'Delete Order' }}</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="c(OrderDetailsModal)" aria-label="Close"></button>
+    <h5 class="modal-title" id="exampleModalLabel1"> 
+      <span *ngIf="!openAddressSection">
+{{ is_view_edit_add === 1 ? 'Add Order' : is_view_edit_add === 2 ? 'View Order' : is_view_edit_add === 3 ? 'Edit Order' : 'Delete Order' }}
+    </span>
+  <span *ngIf="openAddressSection">
+    Add Address
+  </span></h5>
+    <button type="button" class="btn-close" (click)="c(OrderDetailsModal)" aria-label="Close"></button>
   </div>
   <div class="modal-body">
-<div class="row">
-    <div class="col-xl-12">
+    <div class="row" *ngIf="!openAddressSection">
+      <div class="col-xl-12">
         <div class="custom-card">
-                                   <div class="register-page" *ngFor="let x of order;let i = index">
-                          <div class="row gy-3 mb-3">
-                            <div class="col-xl-12">
-                              <label for="Customer" class="form-label"
-                                >Customer</label
-                              > 
-                              <input
-                                type="search"
-                                class="form-control"
-                                [(ngModel)]="x.customer_name"
-                                id="Customer"
-                                placeholder="Search Customer"
-                              />
-                            </div>
-                          </div>
-                          <div class="mb-3">
-                            <div *ngFor="let y of x.order_items;let j = index">
-                                <div class="row">
-                                    <div class="col-xl-6">
-                                         <label>Bin Type</label>
-                                         <select class="form-select">
-                                            <option value="0">Select Bin Type</option>
-                                             <option *ngFor="let bins of bin_types;let k = index" [value]="bins.type">{{ bins.type }}</option>
-                                         </select>
-                                     </div>
-                                     <div class="col-xl-6">
-                                         <label>Quantity</label>
-                                         <input type="number" class="form-control" [(ngModel)]="y.quantity" />
-                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xl-6">
-                                         <label>From Date</label>
-                                         <input type="date" class="form-control" />
-                                     </div>
-                                     <div class="col-xl-6">
-                                         <label>To Date</label>
-                                         <input type="date" class="form-control" [(ngModel)]="y.quantity" />
-                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col justify-content-center text-center">
-                                        <button class="btn btn-primary" *ngIf="j===y.order_items.length - 1" (click)="add_order_item_row(i,j)">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                        <button class="btn btn-primary" *ngIf="y.order_items.length > 1" (click)="remove_order_item_row(i,j)">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                          </div>
-                        </div>
+          <div class="register-page">
+            <div class="row gy-3 mb-3">
+              <div class="col-xl-6">
+                <label for="Customer" class="form-label">Customer</label>
+                <input
+                  type="search"
+                  class="form-control"
+                  [(ngModel)]="order.customer_name"
+                  id="Customer"
+                  placeholder="Search Customer" />
+              </div>
+              <div class="col-xl-6 position-relative">
+                <label class="form-label">Address <span class="ms-2" ngbTooltip="Not finding address? You can add a new one by typing New, Add, Add Address or simply + and tab to register a new address." placement="top">
+                    <i class="fa fa-info-circle text-primary" style="font-size:1.2em; cursor:pointer;"></i>
+                  </span></label>
+                <div class="d-flex align-items-center">
+                  <input type="text" [(ngModel)]="order.address_details[0].name" (change)="validate_address()" placeholder="Search for a address" class="form-control" />
+                  
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div *ngFor="let y of order.order_items; let j = index; trackBy: trackByIndex">
+                <div class="row mb-3">
+                  <div class="col-xl-6">
+                    <label>Bin Type</label>
+                    <select class="form-select" [(ngModel)]="y.bin_type">
+                      <option value="0">Select Bin Type</option>
+                      <option *ngFor="let bins of bin_types; let k = index" [value]="bins.type">{{ bins.type }}</option>
+                    </select>
+                  </div>
+                  <div class="col-xl-6">
+                    <label>Quantity</label>
+                    <input type="number" class="form-control" [(ngModel)]="y.quantity" />
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-xl-6">
+                    <label>From Date</label>
+                    <input type="date" class="form-control" [(ngModel)]="y.from_date" />
+                  </div>
+                  <div class="col-xl-6">
+                    <label>To Date</label>
+                    <input type="date" class="form-control" [(ngModel)]="y.to_date" />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col justify-content-center text-center">
+                    <button class="btn btn-success m-1" *ngIf="j === order.order_items.length - 1" (click)="add_order_item_row()">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                    <button class="btn btn-danger m-1" *ngIf="order.order_items.length > 1" (click)="remove_order_item_row(j)">
+                      <i class="fa fa-minus"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+    <div>
+      <div class="row" *ngIf="openAddressSection">
+        <div class="col-xl-8 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="address_name" [(ngModel)]="address.name" placeholder="Name" />
+            <label for="address_name">Name</label>
+          </div>
+        </div>
+        <div class="col-xl-4 mb-3 d-flex align-items-end">
+          <button class="btn btn-pill btn-primary w-100 h-100"><i class="fa fa-location"></i></button>
+        </div>
+        <div class="col-xl-6 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="address1" [(ngModel)]="address.address1" placeholder="Address 1" />
+            <label for="address1">Address 1</label>
+          </div>
+        </div>
+        <div class="col-xl-6 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="address2" [(ngModel)]="address.address2" placeholder="Address 2" />
+            <label for="address2">Address 2</label>
+          </div>
+        </div>
+        <div class="col-xl-4 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="city" [(ngModel)]="address.city" placeholder="City" />
+            <label for="city">City</label>
+          </div>
+        </div>
+        <div class="col-xl-6 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="province" [(ngModel)]="address.province" placeholder="Province" />
+            <label for="province">Province</label>
+          </div>
+        </div>
+        <div class="col-xl-2 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="zip_code" [(ngModel)]="address.zip_code" placeholder="Zip Code" />
+            <label for="zip_code">Zip Code</label>
+          </div>
+        </div>
+        <div class="col-xl-12 mb-3">
+          <div class="form-floating">
+            <textarea class="form-control" id="address_notes" style="height: 80px" [(ngModel)]="address.address_notes" placeholder="Address Notes"></textarea>
+            <label for="address_notes">Additional Address Notes</label>
+          </div>
+        </div>
+        <div class="col-12 text-end">
+          <button type="button" class="btn btn-primary m-1" (click)="addAddress()">Add</button>
+          <button type="button" class="btn btn-secondary m-1" (click)="openAddressSection = false;order.address_details[0].name=''">Close</button>
+        </div>
+      </div>
+      </div>
   </div>
-  <div class="modal-footer">
+  <div class="modal-footer" *ngIf="!openAddressSection">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="c(OrderDetailsModal)">Close</button>
     <button type="button" class="btn btn-primary">Save changes</button>
   </div>
-
 </ng-template>

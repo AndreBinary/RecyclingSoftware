@@ -1,4 +1,4 @@
-                <!-- Start::page-header -->
+<!-- Start::page-header -->
                 <div class="d-flex align-items-center justify-content-between my-4 page-header-breadcrumb flex-wrap gap-2">
                     <div>
                         <p class="fw-medium fs-20 mb-0">Hello there, Jack Miller</p>
@@ -841,3 +841,65 @@
                     </div>
                 </div>
                 <!-- End:: row-4 -->
+
+                <!-- Start:: row-vehicles -->
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card custom-card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    VEHICLES OVERVIEW
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table text-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th scope="row" class="ps-4"><input class="form-check-input" type="checkbox" id="checkboxNoLabeljob1" value="" aria-label="..."></th>
+                                                <th scope="col">Product</th>
+                                                <th scope="col">Category</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Customer</th>
+                                                <th scope="col">Qty</th>
+                                                <th scope="col">Date Ordered</th>
+                                                <th scope="col" class="text-center">Total Sales</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let vehicle of filteredVehicleData">
+                                                <td class="ps-4"><input class="form-check-input" type="checkbox" aria-label="..."></td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <span class="avatar avatar-md"><img src="./assets/images/ecommerce/jpg/1.jpg" class="" alt="..."></span>
+                                                        <div class="ms-2">
+                                                            <p class="fw-semibold fs-13 mb-0 d-flex align-items-center"><a href="javascript:void(0);">{{vehicle.vehicleName}}</a></p>
+                                                            <p class="fs-12 text-muted mb-0">{{vehicle.makeModel}}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>{{vehicle.status}}</td>
+                                                <td>{{vehicle.assignedTo}}</td>
+                                                <td>{{vehicle.milage}}</td>
+                                                <td>{{vehicle.regNumber}}</td>
+                                                <td>
+                                                    <div class="btn-list">
+                                                        <button class="btn btn-sm btn-icon btn-primary-light btn-wave">
+                                                            <i class="ri-eye-line"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-icon btn-secondary-light btn-wave">
+                                                            <i class="ri-edit-line"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End:: row-vehicles -->

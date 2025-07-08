@@ -3,17 +3,20 @@ import { RouterModule } from '@angular/router';
 import {NgApexchartsModule} from 'ng-apexcharts';
 import { SharedModule } from '../../../shared/shared.module';
 import {  NgbModal, NgbModule, NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { StatisticsChartData, StatisticsChartData1, TopCategoryChartData } from '../../../shared/data/dashboard_chartData/salechart.data';
+import { FemaleUserData, StatisticsChartData, StatisticsChartData1, TopCategoryChartData } from '../../../shared/data/dashboard_chartData/salechart.data';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import { StepperOrientation } from '@angular/cdk/stepper';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper';
+import { GlobalSearchService } from '../../../shared/global-search.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+
 
 @Component({
   selector: 'app-orders',
@@ -27,6 +30,7 @@ export class OrdersComponent  {
   public chartOptions = StatisticsChartData;
   public chartOptions1 = StatisticsChartData1;
   public chartOptions2 = TopCategoryChartData;
+  address:any;
   renderer: any;
   is_view_edit_add:any;
   bin_types:any[]=[{
@@ -38,7 +42,7 @@ export class OrdersComponent  {
     id:2
   }];
   
-  order:any;
+  order: any = null;
   orders:any[] = [{
     id: 1,
     customer_name: 'John Doe',
@@ -54,15 +58,15 @@ export class OrdersComponent  {
     status: 'Awaiting Payment'
   }];
 
-  rangeValue: { from: Date; to: Date } = {
-    from: new Date(),
-    to: (new Date() as any)['fp_incr'](10)
-  };
 
    active: any;
 	disabled = true;
   
   basicDemoValue = '';
+
+  filterText: string = '';
+  filteredOrders: any[] = [];
+  globalSearchSub: Subscription;
 
   onNavChange(changeEvent: NgbNavChangeEvent) {
 		if (changeEvent.nextId === 1) {
@@ -74,13 +78,31 @@ export class OrdersComponent  {
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private _formBuilder: FormBuilder,
-    breakpointObserver: BreakpointObserver
+    breakpointObserver: BreakpointObserver,
+    private globalSearch: GlobalSearchService
   ) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
 
-     
+    this.globalSearchSub = this.globalSearch.searchTerm$.subscribe(term => {
+      this.filterOrders(term);
+    });
+  }
+
+  openAddressSection=false;
+  openCustomerSection=false;
+//add Address
+addAddress(){
+
+}
+  //validate address
+  validate_address(){
+    if(this.order.address_details[0].name === "New Address" || this.order.address_details[0].name === "Add Address"||
+      this.order.address_details[0].name === 'New' || this.order.address_details[0].name === 'Add'|| this.order.address_details[0].name === '+'
+    ) {
+      this.openAddressSection =true;
+    }
   }
 
   firstFormGroup = this._formBuilder.group({
@@ -121,6 +143,24 @@ export class OrdersComponent  {
   
   ngOnDestroy(){
     document.querySelector('.single-page-header')?.classList.remove('d-none');
+    if (this.globalSearchSub) this.globalSearchSub.unsubscribe();
+  }
+
+  ngOnInit() {
+    this.filteredOrders = this.orders.slice();
+  }
+
+  filterOrders(term: string) {
+    if (!term) {
+      this.filteredOrders = this.orders.slice();
+    } else {
+      const filter = term.toLowerCase();
+      this.filteredOrders = this.orders.filter(order =>
+        (order.customer_name && order.customer_name.toLowerCase().includes(filter)) ||
+        (order.status && order.status.toLowerCase().includes(filter)) ||
+        (order.id + '').includes(filter)
+      );
+    }
   }
 
   viewOrder(z:any) {
@@ -135,32 +175,36 @@ export class OrdersComponent  {
    this.is_view_edit_add=4;
     this.modalService.open(z, { size: 'lg', centered: true, backdrop: 'static' });
   }
-  addOrder(z:any) {
-    this.is_view_edit_add=1;
+  addOrder(z: any) {
+    this.is_view_edit_add = 1;
     this.modalService.open(z, { size: 'lg', centered: true, backdrop: 'static' });
-    this.order = [{
-    id:0,
-    customer_id:0,
-    customer_name:'',
-    address_details:[{
-      id:0,
-      name:0,
-      address1:'',
-      address2:'',
-      city:'',
-      province:'',
-      zip:'',
-      country:'South Africa'
-    }],
-    order_items:[{
-      id:0,
-      quantity:0,
-      bin_type:'',
-      bin_type_id:0,
-      from_date:'',
-      to_date:''
-    }]
-  }]
+    this.order = {
+      id: 0,
+      customer_id: 0,
+      customer_name: '',
+      address_details: [{
+        id: 0,
+        name: '',
+        address1: '',
+        address2: '',
+        city: '',
+        province: '',
+        zip: '',
+        country: 'South Africa'
+      }],
+      order_items: [
+        {
+          id: 0,
+          quantity: 0,
+          bin_type: '',
+          bin_type_id: 0,
+          from_date: '',
+          from_date_valid: 0,
+          to_date_valid: 0,
+          to_date: ''
+        }
+      ]
+    };
   }
 
 add_order_row(){
@@ -184,27 +228,32 @@ add_order_row(){
       bin_type:'',
       bin_type_id:0,
       from_date:'',
-      to_date:''
+      to_date:'',
+          to_date_valid:0,
+    from_date_valid:0
     }]
   })
 }
 
-add_order_item_row(i:any,j:any){
- this.order[i].order_items.push({
-      id:0,
-      quantity:0,
-      bin_type:'',
-      bin_type_id:0,
-      from_date:'',
-      to_date:''
-    }
-  )
+add_order_item_row() {
+  this.order.order_items.push({
+    id: 0,
+    quantity: 0,
+    bin_type: '',
+    bin_type_id: 0,
+    from_date: '',
+    to_date: '',
+    to_date_valid: 0,
+    from_date_valid: 0
+  });
 }
 
-remove_order_item_row(i:any,j:any){
-  if(this.order[i].order_items.length>1){
-  this.order[i].order_items.splice(1,j)
+remove_order_item_row(j: number) {
+  if (this.order.order_items.length > 1) {
+    this.order.order_items.splice(j, 1);
   }
 }
-
+trackByIndex(index: number, item: any): number {
+  return index;
+}
 }

@@ -1,30 +1,22 @@
-<div class="row">
-  <div class="card">
-    <div class="card-header">
+<div class="row card custom-card">
+    <div class="card-header row">
       <div class="row">
         <div class="col-4">
           <div class="card-title">INVENTORY ITEMS</div>
         </div>
-        <div class="col-5">
-          <div class="input-group float-start">
-            <input type="text" class="form-control" placeholder="Search Inventory Items" aria-label="Search Inventory Items" [(ngModel)]="filterText">
-            <button class="btn btn-primary" type="button"><i class="ri-search-line"></i></button>
-          </div>
+        <div class="col-5"></div>
+        <div class="col-3">
+          <button class="btn btn-success-transparent rounded-pill float-end">
+                  <i class="ri-download-2-line"></i> Export Report
+          </button>
+          <button type="button" class="btn btn-primary rounded-pill" (click)="addInventoryItem(basicModal)">
+            <i class="ri-add-line"></i> Add Item
+          </button>
         </div>
-      <div class="col-3">
-        <button class="btn btn-success-transparent rounded-pill float-end">
-                <i class="ri-download-2-line"></i> Export Report
-        </button>
-        <button type="button" class="btn btn-primary rounded-pill" (click)="addInventoryItem(basicModal)">
-          <i class="ri-add-line"></i> Add Item
-        </button>
-      </div>
       </div>
     </div>
-  </div>
-</div>
-<div class="row card custom-card">
-    <table class="table table-bordered table-vcenter table-responsive table-striped text-nowrap mb-0">
+  <div class="card-body p-0">
+    <table class="table table-bordered table-hover table-vcenter table-responsive table-striped text-nowrap mb-0">
       <thead>
         <tr>
           <th class="w-1">#</th>
@@ -87,6 +79,8 @@
         </ul>
       </nav>
     </div>
+  </div>
+
 </div>
 
 <ng-template #basicModal let-modal>
@@ -163,7 +157,7 @@
                 <div class="col-xl-6">
                   <div class="form-floating">
                     <input type="text" class="form-control " placeholder="" id="floatingLocation">
-                    <label for="floatingLocation">Location</label>
+                    <label for="floatingLocation">LOCATIONS</label>
                   </div>
                 </div>
               </div>
@@ -179,4 +173,312 @@
               </button>
               <button type="button" class="btn btn-primary">Save changes</button>
             </div>
+</ng-template>
+
+<ng-template #locationModal let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title" id="locationModalLabel">{{edit_or_add_location || 'Add New Location'}}</h6>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      (click)="modal.dismiss('Cross click')"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div class="row mb-3">
+      <div class="col-xl-6">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="locationNameInput" [(ngModel)]="locationForm.name" placeholder="Location Name">
+          <label for="locationNameInput">Location Name</label>
+        </div>
+      </div>
+      <div class="col-xl-6">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="locationBranchInput" [(ngModel)]="locationForm.branch_name" placeholder="Branch Name">
+          <label for="locationBranchInput">Branch Name</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal"
+      (click)="modal.close('Close click')"
+    >
+      Close
+    </button>
+    <button type="button" class="btn btn-primary" (click)="saveLocation(modal)">Save changes</button>
+  </div>
+</ng-template>
+
+<div class="row card custom-card mt-0">
+  <div class="card-header row">
+      <div class="row">
+        <div class="col-4">
+          <div class="card-title">LOCATIONS</div>
+        </div>
+        <div class="col-5"></div>
+        <div class="col-3">
+          <button class="btn btn-success-transparent rounded-pill float-end">
+            <i class="ri-download-2-line"></i> Export Report
+          </button>
+          <button type="button" class="btn btn-primary rounded-pill" (click)="addLocation(locationModal)">
+            <i class="ri-add-line"></i> Add Location
+          </button>
+        </div>
+      </div>
+    </div>
+  <table class="table table-bordered table-vcenter table-responsive table-hover table-striped text-nowrap mb-0">
+    <thead>
+      <tr>
+        <th class="w-1">Location ID</th>
+        <th>Location Name</th>
+        <th>Branch Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let loc of pagedLocationItems">
+        <td>{{ loc.id }}</td>
+        <td>{{ loc.name }}</td>
+        <td>{{ loc.branch_name }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+    <div class="d-flex align-items-center">
+      <span class="me-2">Show</span>
+      <input type="number" min="1" class="form-control form-control-sm d-inline-block" style="width: 70px;" [(ngModel)]="locationPageSize" (ngModelChange)="setLocationPageSize($event)" />
+      <span class="ms-2">entries</span>
+    </div>
+    <div>
+      Showing {{(locationCurrentPage - 1) * locationPageSize + 1}} to {{(locationCurrentPage - 1) * locationPageSize + pagedLocationItems.length}} of {{locationItems.length}} entries
+    </div>
+    <nav>
+      <ul class="pagination mb-0">
+        <li class="page-item" [class.disabled]="locationCurrentPage === 1">
+          <a class="page-link" href="#" (click)="setLocationPage(locationCurrentPage - 1, $event)">Previous</a>
+        </li>
+        <li class="page-item" *ngFor="let page of locationTotalPagesArray; let i = index" [class.active]="locationCurrentPage === (i+1)">
+          <a class="page-link" href="#" (click)="setLocationPage(i+1, $event)">{{i+1}}</a>
+        </li>
+        <li class="page-item" [class.disabled]="locationCurrentPage === locationTotalPages">
+          <a class="page-link" href="#" (click)="setLocationPage(locationCurrentPage + 1, $event)">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<!-- Departments Table -->
+<div class="row card custom-card mt-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="card-title">Departments</span>
+    <button class="btn btn-primary btn-sm" (click)="openAddDepartment(departmentModal)">Add Department</button>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-bordered table-hover table-striped mb-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dept of pagedDepartments; let i = index">
+          <td>{{ dept.id }}</td>
+          <td>{{ dept.name }}</td>
+          <td>
+            <button class="btn btn-sm btn-info me-1" (click)="openEditDepartment(departmentModal, dept, (departmentCurrentPage-1)*departmentPageSize + i)">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+      <div>
+        <label>Show
+          <input type="number" min="1" class="form-control form-control-sm d-inline-block" style="width: 70px;" [(ngModel)]="departmentPageSize" (ngModelChange)="setDepartmentPageSize($event)" />
+          entries
+        </label>
+      </div>
+      <div>
+        Showing {{(departmentCurrentPage-1)*departmentPageSize+1}} to {{(departmentCurrentPage-1)*departmentPageSize+pagedDepartments.length}} of {{filteredDepartments.length}} entries
+      </div>
+      <nav>
+        <ul class="pagination mb-0">
+          <li class="page-item" [class.disabled]="departmentCurrentPage === 1">
+            <a class="page-link" href="#" (click)="setDepartmentPage(departmentCurrentPage-1, $event)">Previous</a>
+          </li>
+          <li class="page-item" *ngFor="let page of departmentTotalPagesArray; let i = index" [class.active]="departmentCurrentPage === (i+1)">
+            <a class="page-link" href="#" (click)="setDepartmentPage(i+1, $event)">{{i+1}}</a>
+          </li>
+          <li class="page-item" [class.disabled]="departmentCurrentPage === departmentTotalPages">
+            <a class="page-link" href="#" (click)="setDepartmentPage(departmentCurrentPage+1, $event)">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<!-- Department Modal -->
+<ng-template #departmentModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ departmentEditIndex !== null ? 'Edit Department' : 'Add Department' }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-3">
+      <label for="departmentName" class="form-label">Department Name</label>
+      <input type="text" class="form-control" id="departmentName" [(ngModel)]="departmentForm.name" required />
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="saveDepartment(modal)">Save</button>
+  </div>
+</ng-template>
+
+<!-- Categories Table -->
+<div class="row card custom-card mt-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="card-title">Categories</span>
+    <button class="btn btn-primary btn-sm" (click)="openAddCategory(categoryModal)">Add Category</button>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-bordered table-hover table-striped mb-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cat of pagedCategories; let i = index">
+          <td>{{ cat.id }}</td>
+          <td>{{ cat.name }}</td>
+          <td>
+            <button class="btn btn-sm btn-info me-1" (click)="openEditCategory(categoryModal, cat, (categoryCurrentPage-1)*categoryPageSize + i)">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+      <div>
+        <label>Show
+          <input type="number" min="1" class="form-control form-control-sm d-inline-block" style="width: 70px;" [(ngModel)]="categoryPageSize" (ngModelChange)="setCategoryPageSize($event)" />
+          entries
+        </label>
+      </div>
+      <div>
+        Showing {{(categoryCurrentPage-1)*categoryPageSize+1}} to {{(categoryCurrentPage-1)*categoryPageSize+pagedCategories.length}} of {{filteredCategories.length}} entries
+      </div>
+      <nav>
+        <ul class="pagination mb-0">
+          <li class="page-item" [class.disabled]="categoryCurrentPage === 1">
+            <a class="page-link" href="#" (click)="setCategoryPage(categoryCurrentPage-1, $event)">Previous</a>
+          </li>
+          <li class="page-item" *ngFor="let page of categoryTotalPagesArray; let i = index" [class.active]="categoryCurrentPage === (i+1)">
+            <a class="page-link" href="#" (click)="setCategoryPage(i+1, $event)">{{i+1}}</a>
+          </li>
+          <li class="page-item" [class.disabled]="categoryCurrentPage === categoryTotalPages">
+            <a class="page-link" href="#" (click)="setCategoryPage(categoryCurrentPage+1, $event)">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<!-- Category Modal -->
+<ng-template #categoryModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ categoryEditIndex !== null ? 'Edit Category' : 'Add Category' }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-3">
+      <label for="categoryName" class="form-label">Category Name</label>
+      <input type="text" class="form-control" id="categoryName" [(ngModel)]="categoryForm.name" required />
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="saveCategory(modal)">Save</button>
+  </div>
+</ng-template>
+
+<!-- Sub-Categories Table -->
+<div class="row card custom-card mt-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="card-title">Sub-Categories</span>
+    <button class="btn btn-primary btn-sm" (click)="openAddSubCategory(subCategoryModal)">Add Sub-Category</button>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-bordered table-hover table-striped mb-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sub of pagedSubCategories; let i = index">
+          <td>{{ sub.id }}</td>
+          <td>{{ sub.name }}</td>
+          <td>
+            <button class="btn btn-sm btn-info me-1" (click)="openEditSubCategory(subCategoryModal, sub, (subCategoryCurrentPage-1)*subCategoryPageSize + i)">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+      <div>
+        <label>Show
+          <input type="number" min="1" class="form-control form-control-sm d-inline-block" style="width: 70px;" [(ngModel)]="subCategoryPageSize" (ngModelChange)="setSubCategoryPageSize($event)" />
+          entries
+        </label>
+      </div>
+      <div>
+        Showing {{(subCategoryCurrentPage-1)*subCategoryPageSize+1}} to {{(subCategoryCurrentPage-1)*subCategoryPageSize+pagedSubCategories.length}} of {{filteredSubCategories.length}} entries
+      </div>
+      <nav>
+        <ul class="pagination mb-0">
+          <li class="page-item" [class.disabled]="subCategoryCurrentPage === 1">
+            <a class="page-link" href="#" (click)="setSubCategoryPage(subCategoryCurrentPage-1, $event)">Previous</a>
+          </li>
+          <li class="page-item" *ngFor="let page of subCategoryTotalPagesArray; let i = index" [class.active]="subCategoryCurrentPage === (i+1)">
+            <a class="page-link" href="#" (click)="setSubCategoryPage(i+1, $event)">{{i+1}}</a>
+          </li>
+          <li class="page-item" [class.disabled]="subCategoryCurrentPage === subCategoryTotalPages">
+            <a class="page-link" href="#" (click)="setSubCategoryPage(subCategoryCurrentPage+1, $event)">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<!-- Sub-Category Modal -->
+<ng-template #subCategoryModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ subCategoryEditIndex !== null ? 'Edit Sub-Category' : 'Add Sub-Category' }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-3">
+      <label for="subCategoryName" class="form-label">Sub-Category Name</label>
+      <input type="text" class="form-control" id="subCategoryName" [(ngModel)]="subCategoryForm.name" required />
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="saveSubCategory(modal)">Save</button>
+  </div>
 </ng-template>

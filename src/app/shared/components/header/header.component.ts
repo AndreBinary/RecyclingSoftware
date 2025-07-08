@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, HostListener, TemplateRef, in
 import { ModalDismissReasons, NgbModal, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { SwitcherComponent } from '../switcher/switcher.component';
 import { AppStateService } from '../../services/app-state.service';
+import { GlobalSearchService } from '../../../shared/global-search.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -40,10 +41,20 @@ export class HeaderComponent {
   }
    public localdata:any;
 
-  constructor(private cdr: ChangeDetectorRef, public elementRef: ElementRef,private appStateService: AppStateService,){
+  globalSearchTerm = '';
+  constructor(
+    private cdr: ChangeDetectorRef, 
+    public elementRef: ElementRef,
+    private globalSearch: GlobalSearchService,
+    private appStateService: AppStateService,
+  ){
     this.appStateService.state$.subscribe(state => {
       this.localdata = state;
     }); 
+  }
+
+  onGlobalSearchChange(term: string) {
+    this.globalSearch.setSearchTerm(term);
   }
 
   openSm(content: TemplateRef<any>) {

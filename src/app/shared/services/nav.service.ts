@@ -112,6 +112,7 @@ export class NavService implements OnDestroy {
             { path: '/crm/contacts', title: 'Contacts', type: 'link', dirchange: false },
             { path: '/crm/deals', title: 'Deals', type: 'link', dirchange: false },
             { path: '/crm/leads', title: 'Leads', type: 'link', dirchange: false },
+            { path: '/crm/customers', title: 'Customers', type: 'link', dirchange: false },
           ],
         },
         {
