@@ -7,6 +7,8 @@ import { StatisticsChartData, StatisticsChartData1, TopCategoryChartData } from 
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { GlobalSearchService } from '../../../shared/global-search.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inventory',
@@ -29,7 +31,9 @@ export class InventoryComponent  {
     totalValue: 75,
     lastUpdated: new Date('2023-10-01'),
     status: 'In Stock',
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png'
+    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
+    branch_name: 'Branch A',
+    location: 'Location 1'
   },
   {
     id: 2,
@@ -41,7 +45,9 @@ export class InventoryComponent  {
     totalValue: 40,
     lastUpdated: new Date('2023-10-02'),
     status: 'In Stock',
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png'
+    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
+     branch_name: 'Branch B',
+    location: 'Location 2'
   },
   {
     id: 3,
@@ -53,421 +59,14 @@ export class InventoryComponent  {
     totalValue: 100,
     lastUpdated: new Date('2023-10-03'),
     status: 'In Stock',
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png'
+    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
+     branch_name: 'Branch C',
+    location: 'Location 3'
   }];
 
-  table_data = [
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (949) 527-2108',
-    age: 36,
-    address: { street: 'Some street', number: 12 },
-    company: 'KONGENE',
-    name: 'Deanne Contreras',
-    isActive: true,
-    level: 'Low',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (878) 515-3653',
-    age: 32,
-    address: { street: 'Tumblewood street', number: 12 },
-    company: 'ISOSWITCH',
-    name: 'Peggy Burke',
-    isActive: false,
-    level: 'Medium',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (844) 593-2360',
-    age: 21,
-    address: { street: 'East street', number: 12 },
-    company: 'HIVEDOM',
-    name: 'Josephine Reilly',
-    isActive: true,
-    level: 'High',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (800) 413-3813',
-    age: 24,
-    address: { street: 'West street', number: 12 },
-    company: 'EMERGENT',
-    name: 'Phillips Fry',
-    isActive: false,
-    level: 'Low',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (934) 551-2224',
-    age: 20,
-    address: { street: 'North street', number: 12 },
-    company: 'ZILLANET',
-    name: 'Valentine Webb',
-    isActive: false,
-    level: 'Medium',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (948) 460-3627',
-    age: 31,
-    address: { street: 'South street', number: 12 },
-    company: 'KNOWLYSIS',
-    name: 'Heidi Duncan',
-    isActive: true,
-    level: 'High',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (841) 479-3920',
-    age: 30,
-    address: { street: 'Buffalo street', number: 12 },
-    company: 'TYPHONICA',
-    name: 'Poole Dodson',
-    isActive: false,
-    level: 'Low',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (998) 546-2953',
-    age: 37,
-    address: { street: 'Onorato street', number: 12 },
-    company: 'COLAIRE',
-    name: 'Marie Molina',
-    isActive: false,
-    level: 'Medium',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (811) 511-2927',
-    age: 31,
-    address: { street: 'Ontario street', number: 12 },
-    company: 'OMNIGOG',
-    name: 'Monica Frazier',
-    isActive: true,
-    level: 'High',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (967) 504-3593',
-    age: 35,
-    address: { street: 'Canada street', number: 12 },
-    company: 'ENERVATE',
-    name: 'Kinney Logan',
-    isActive: true,
-    level: 'Low',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (902) 500-3665',
-    age: 28,
-    address: { street: 'Southeast street', number: 12 },
-    company: 'CALCULA',
-    name: 'Wilson Hatfield',
-    isActive: true,
-    level: 'Medium',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (933) 565-2698',
-    age: 29,
-    address: { street: 'Upper Terrace street', number: 12 },
-    company: 'GINK',
-    name: 'Trevino Casey',
-    isActive: true,
-    level: 'High',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (939) 530-3189',
-    age: 34,
-    address: { street: 'Dacota street', number: 12 },
-    company: 'MARKETOID',
-    name: 'Scott Barker',
-    isActive: true,
-    level: 'Low',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (949) 600-2827',
-    age: 29,
-    address: { street: '5th street', number: 12 },
-    company: 'MATRIXITY',
-    name: 'Sheree James',
-    isActive: true,
-    level: 'Medium',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (833) 559-2128',
-    age: 35,
-    address: { street: 'EastNorth street', number: 12 },
-    company: 'LETPRO',
-    name: 'Kristen Whitehead',
-    isActive: true,
-    level: 'High',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (923) 480-2195',
-    age: 20,
-    address: { street: 'Oak street', number: 12 },
-    company: 'HOMETOWN',
-    name: 'Norma Rush',
-    isActive: false,
-    level: 'Low',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (967) 573-3873',
-    age: 35,
-    address: { street: 'Australia street', number: 12 },
-    company: 'EWEVILLE',
-    name: 'Merrill Allen',
-    isActive: true,
-    level: 'Medium',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (985) 404-2360',
-    age: 30,
-    address: { street: 'NYC street', number: 12 },
-    company: 'PORTALINE',
-    name: 'Claudia Sawyer',
-    isActive: true,
-    level: 'High',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (907) 406-2333',
-    age: 27,
-    address: { street: 'Gate street', number: 12 },
-    company: 'VIRVA',
-    name: 'Craig Herrera',
-    isActive: false,
-    level: 'Low',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (954) 412-3881',
-    age: 37,
-    address: { street: 'Southeast', number: 12 },
-    company: 'VINCH',
-    name: 'Peterson Johns',
-    isActive: false,
-    level: 'Medium',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (882) 527-2652',
-    age: 25,
-    address: { street: 'Lynn', number: 12 },
-    company: 'GYNKO',
-    name: 'Gordon Rutledge',
-    isActive: false,
-    level: 'High',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (884) 587-2850',
-    age: 20,
-    address: { street: 'Engine', number: 12 },
-    company: 'COMCUR',
-    name: 'Patton Mcbride',
-    isActive: false,
-    level: 'Low',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (802) 562-2467',
-    age: 35,
-    address: { street: 'Queen street', number: 12 },
-    company: 'EARTHPURE',
-    name: 'Trudy Camacho',
-    isActive: false,
-    level: 'Medium',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (873) 421-3625',
-    age: 38,
-    address: { street: 'King street', number: 12 },
-    company: 'ARCHITAX',
-    name: 'Myles Blair',
-    isActive: true,
-    level: 'High',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (901) 502-3536',
-    age: 36,
-    address: { street: 'First st.', number: 12 },
-    company: 'CANOPOLY',
-    name: 'Josefa Foley',
-    isActive: true,
-    level: 'Low',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (985) 524-3581',
-    age: 36,
-    address: { street: 'Second', number: 12 },
-    company: 'ENTOGROK',
-    name: 'Kathy Barr',
-    isActive: false,
-    level: 'Medium',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (948) 492-2881',
-    age: 40,
-    address: { street: 'Third', number: 12 },
-    company: 'CENTICE',
-    name: 'Sybil Sears',
-    isActive: false,
-    level: 'High',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (815) 412-3123',
-    age: 36,
-    address: { street: '4th', number: 12 },
-    company: 'ZANILLA',
-    name: 'Moody Blevins',
-    isActive: true,
-    level: 'Low',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (924) 594-3384',
-    age: 31,
-    address: { street: '5th', number: 12 },
-    company: 'NAMEGEN',
-    name: 'Kristine Ratliff',
-    isActive: true,
-    level: 'Medium',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (938) 550-3997',
-    age: 30,
-    address: { street: 'Sixth', number: 12 },
-    company: 'MAGNEATO',
-    name: 'Cooley Pitts',
-    isActive: false,
-    level: 'High',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (930) 593-3548',
-    age: 30,
-    address: { street: '7th', number: 12 },
-    company: 'GEOFORMA',
-    name: 'Haley Noble',
-    isActive: false,
-    level: 'Low',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (995) 479-2495',
-    age: 26,
-    address: { street: '8th', number: 12 },
-    company: 'LYRIA',
-    name: 'Garner Owens',
-    isActive: true,
-    level: 'Medium',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (958) 410-2373',
-    age: 24,
-    address: { street: '9th', number: 12 },
-    company: 'SOFTMICRO',
-    name: 'Jody Reyes',
-    isActive: true,
-    level: 'High',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (835) 551-3617',
-    age: 39,
-    address: { street: '10th', number: 12 },
-    company: 'CORPORANA',
-    name: 'Patterson Chavez',
-    isActive: true,
-    level: 'Low',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (872) 561-3479',
-    age: 20,
-    address: { street: '11th', number: 12 },
-    company: 'BOINK',
-    name: 'Ellen Nielsen',
-    isActive: true,
-    level: 'Medium',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (935) 535-2958',
-    age: 26,
-    address: { street: '12th', number: 12 },
-    company: 'PETICULAR',
-    name: 'Serena Graves',
-    isActive: false,
-    level: 'High',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (921) 426-2277',
-    age: 24,
-    address: { street: '13th', number: 12 },
-    company: 'SHOPABOUT',
-    name: 'Emily Bruce',
-    isActive: false,
-    level: 'Low',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (875) 474-3800',
-    age: 29,
-    address: { street: '14th', number: 12 },
-    company: 'COMCUBINE',
-    name: 'Fanny Swanson',
-    isActive: true,
-    level: 'Medium',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (893) 536-2201',
-    age: 31,
-    address: { street: '15th', number: 12 },
-    company: 'ZEDALIS',
-    name: 'Sellers Velez',
-    isActive: false,
-    level: 'High',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (927) 460-3553',
-    age: 23,
-    address: { street: '16th', number: 12 },
-    company: 'SUREMAX',
-    name: 'Mónica Glover',
-    isActive: false,
-    level: 'Low',
-  },
-  {
-    imgUrl: 'https://i.imgur.com/GLqxxnn.png',
-    phone: '+1 (949) 528-2108',
-    age: 31,
-    address: { street: 'Some street', number: 12 },
-    company: 'DOE',
-    name: 'John Doe',
-    isActive: true,
-    level: 'Low',
-  },
-]
+  product:any;
+
+
   chartOptions2: any = {
     series: [
       {
@@ -658,30 +257,381 @@ xaxis: {
     from: new Date(),
     to: (new Date() as any)['fp_incr'](10)
   };
+  filteredInventoryItems: any[] = [];
+  pagedInventoryItems: any[] = [];
+  currentPage: number = 1;
+  pageSize: number = 5;
+  totalPages: number = 1;
+  totalPagesArray: number[] = [];
 
-  constructor(private modalService: NgbModal){
+  // Location table variables and methods
+  locationItems = [
+    { id: 1, name: 'Location 1', branch_name: 'Branch A' },
+    { id: 2, name: 'Location 2', branch_name: 'Branch B' },
+    { id: 3, name: 'Location 3', branch_name: 'Branch C' },
+    { id: 4, name: 'Location 4', branch_name: 'Branch D' },
+    { id: 5, name: 'Location 5', branch_name: 'Branch E' },
+    { id: 6, name: 'Location 6', branch_name: 'Branch F' },
+    { id: 7, name: 'Location 7', branch_name: 'Branch G' },
+    { id: 8, name: 'Location 8', branch_name: 'Branch H' },
+    { id: 9, name: 'Location 9', branch_name: 'Branch I' },
+    { id: 10, name: 'Location 10', branch_name: 'Branch J' }
+  ];
+  pagedLocationItems: any[] = [];
+  locationCurrentPage: number = 1;
+  locationPageSize: number = 5;
+  locationTotalPages: number = 1;
+  locationTotalPagesArray: number[] = [];
+
+  filteredLocationItems: any[] = [];
+
+  edit_or_add_location = 'Add New Location';
+  locationForm: any = { name: '', branch_name: '' };
+
+  departments: any[] = [
+    { id: 1, name: 'Logistics' },
+    { id: 2, name: 'Procurement' },
+    { id: 3, name: 'Production' },
+    { id: 4, name: 'Quality' },
+    { id: 5, name: 'Sales' },
+    { id: 6, name: 'HR' },
+    { id: 7, name: 'IT' },
+    { id: 8, name: 'Finance' },
+    { id: 9, name: 'Admin' },
+    { id: 10, name: 'Maintenance' }
+  ];
+  filteredDepartments: any[] = [];
+  pagedDepartments: any[] = [];
+  departmentCurrentPage: number = 1;
+  departmentPageSize: number = 5;
+  departmentTotalPages: number = 1;
+  departmentTotalPagesArray: number[] = [];
+  departmentForm: any = { id: null, name: '' };
+  departmentEditIndex: number | null = null;
+
+  categories: any[] = [
+    { id: 1, name: 'Paper' },
+    { id: 2, name: 'Plastic' },
+    { id: 3, name: 'Metal' },
+    { id: 4, name: 'Electronics' },
+    { id: 5, name: 'Glass' },
+    { id: 6, name: 'Textile' },
+    { id: 7, name: 'Wood' },
+    { id: 8, name: 'Organic' },
+    { id: 9, name: 'Hazardous' },
+    { id: 10, name: 'Other' }
+  ];
+  filteredCategories: any[] = [];
+  pagedCategories: any[] = [];
+  categoryCurrentPage: number = 1;
+  categoryPageSize: number = 5;
+  categoryTotalPages: number = 1;
+  categoryTotalPagesArray: number[] = [];
+  categoryForm: any = { id: null, name: '' };
+  categoryEditIndex: number | null = null;
+
+  sub_categories: any[] = [
+    { id: 1, name: 'A4 Paper' },
+    { id: 2, name: 'PET Bottles' },
+    { id: 3, name: 'Aluminum Cans' },
+    { id: 4, name: 'Mobile Phones' },
+    { id: 5, name: 'Window Glass' },
+    { id: 6, name: 'Cotton' },
+    { id: 7, name: 'Pallets' },
+    { id: 8, name: 'Food Waste' },
+    { id: 9, name: 'Batteries' },
+    { id: 10, name: 'Miscellaneous' }
+  ];
+  filteredSubCategories: any[] = [];
+  pagedSubCategories: any[] = [];
+  subCategoryCurrentPage: number = 1;
+  subCategoryPageSize: number = 5;
+  subCategoryTotalPages: number = 1;
+  subCategoryTotalPagesArray: number[] = [];
+  subCategoryForm: any = { id: null, name: '' };
+  subCategoryEditIndex: number | null = null;
+
+  globalSearchSub: Subscription;
+
+  constructor(private modalService: NgbModal, private globalSearch: GlobalSearchService){
     document.querySelector('.single-page-header')?.classList.add('d-none');
+    this.globalSearchSub = this.globalSearch.searchTerm$.subscribe(term => {
+      this.filterInventoryItems(term);
+      this.filterLocationItems(term);
+      this.filterDepartments(term);
+      this.filterCategories(term);
+      this.filterSubCategories(term);
+    });
   }
-  addInventoryItem(x:any){
-    this.edit_or_add_product = 'Add New Product';
-    this.modalService.open(x,{size:'xl'});
-  }
 
-  
-editItem(x:any){
-  this.edit_or_add_product = 'Edit Product';
-  this.modalService.open(x,{size:'xl'}); 
-}
-
-deleteItem(x:any){ 
-
-}
-
-openBasic(basicModal: any) {
-    this.modalService.open(basicModal);
+  ngOnInit() {
+    this.filterInventoryItems('');
+    this.paginateLocationItems();
+    this.filterLocationItems('');
+    this.filterDepartments('');
+    this.filterCategories('');
+    this.filterSubCategories('');
   }
 
   ngOnDestroy(){
     document.querySelector('.single-page-header')?.classList.remove('d-none');
+    if (this.globalSearchSub) this.globalSearchSub.unsubscribe();
+  }
+
+  filterInventoryItems(term: string) {
+    if (!term) {
+      this.filteredInventoryItems = this.inventoryItems.slice();
+    } else {
+      const filter = term.toLowerCase();
+      this.filteredInventoryItems = this.inventoryItems.filter(item =>
+        item.name.toLowerCase().includes(filter) ||
+        item.category.toLowerCase().includes(filter) ||
+        (item.branch_name && item.branch_name.toLowerCase().includes(filter)) ||
+        (item.location && item.location.toLowerCase().includes(filter))
+      );
+    }
+    this.currentPage = 1;
+    this.paginateInventoryItems();
+  }
+
+  paginateInventoryItems() {
+    this.totalPages = Math.ceil(this.filteredInventoryItems.length / this.pageSize) || 1;
+    this.totalPagesArray = Array(this.totalPages).fill(0).map((x, i) => i + 1);
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.pagedInventoryItems = this.filteredInventoryItems.slice(start, end);
+  }
+
+  setPage(page: number, event: Event) {
+    event.preventDefault();
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.paginateInventoryItems();
+  }
+
+  setPageSize(size: number) {
+    this.pageSize = Math.max(1, +size || 1);
+    this.currentPage = 1;
+    this.paginateInventoryItems();
+  }
+
+  filterLocationItems(term: string) {
+    if (!term) {
+      this.filteredLocationItems = this.locationItems.slice();
+    } else {
+      const filter = term.toLowerCase();
+      this.filteredLocationItems = this.locationItems.filter(loc =>
+        loc.name.toLowerCase().includes(filter) ||
+        loc.branch_name.toLowerCase().includes(filter) ||
+        (loc.id + '').includes(filter)
+      );
+    }
+    this.locationCurrentPage = 1;
+    this.paginateLocationItems();
+  }
+
+  paginateLocationItems() {
+    const items = this.filteredLocationItems || this.locationItems;
+    this.locationTotalPages = Math.ceil(items.length / this.locationPageSize) || 1;
+    this.locationTotalPagesArray = Array(this.locationTotalPages).fill(0).map((x, i) => i + 1);
+    const start = (this.locationCurrentPage - 1) * this.locationPageSize;
+    const end = start + this.locationPageSize;
+    this.pagedLocationItems = items.slice(start, end);
+  }
+
+  setLocationPage(page: number, event: Event) {
+    event.preventDefault();
+    if (page < 1 || page > this.locationTotalPages) return;
+    this.locationCurrentPage = page;
+    this.paginateLocationItems();
+  }
+
+  setLocationPageSize(size: number) {
+    this.locationPageSize = Math.max(1, +size || 1);
+    this.locationCurrentPage = 1;
+    this.paginateLocationItems();
+  }
+
+  filterDepartments(term: string) {
+    if (!term) {
+      this.filteredDepartments = this.departments.slice();
+    } else {
+      const filter = term.toLowerCase();
+      this.filteredDepartments = this.departments.filter(d => d.name.toLowerCase().includes(filter));
+    }
+    this.departmentCurrentPage = 1;
+    this.paginateDepartments();
+  }
+  paginateDepartments() {
+    this.departmentTotalPages = Math.ceil(this.filteredDepartments.length / this.departmentPageSize) || 1;
+    this.departmentTotalPagesArray = Array(this.departmentTotalPages).fill(0).map((x, i) => i + 1);
+    const start = (this.departmentCurrentPage - 1) * this.departmentPageSize;
+    const end = start + this.departmentPageSize;
+    this.pagedDepartments = this.filteredDepartments.slice(start, end);
+  }
+  setDepartmentPage(page: number, event: Event) {
+    event.preventDefault();
+    if (page < 1 || page > this.departmentTotalPages) return;
+    this.departmentCurrentPage = page;
+    this.paginateDepartments();
+  }
+  setDepartmentPageSize(size: number) {
+    this.departmentPageSize = Math.max(1, +size || 1);
+    this.departmentCurrentPage = 1;
+    this.paginateDepartments();
+  }
+  openAddDepartment(modalRef: any) {
+    this.departmentForm = { id: null, name: '' };
+    this.departmentEditIndex = null;
+    this.modalService.open(modalRef, { size: 'md' });
+  }
+  openEditDepartment(modalRef: any, dept: any, idx: number) {
+    this.departmentForm = { ...dept };
+    this.departmentEditIndex = idx;
+    this.modalService.open(modalRef, { size: 'md' });
+  }
+  saveDepartment(modalRef: any) {
+    if (this.departmentForm.name) {
+      if (this.departmentEditIndex !== null) {
+        this.departments[this.departmentEditIndex] = { ...this.departmentForm };
+      } else {
+        this.departments.push({ id: this.departments.length + 1, name: this.departmentForm.name });
+      }
+      this.filterDepartments('');
+      modalRef.close();
+      this.departmentEditIndex = null;
+    }
+  }
+
+  filterCategories(term: string) {
+    if (!term) {
+      this.filteredCategories = this.categories.slice();
+    } else {
+      const filter = term.toLowerCase();
+      this.filteredCategories = this.categories.filter(c => c.name.toLowerCase().includes(filter));
+    }
+    this.categoryCurrentPage = 1;
+    this.paginateCategories();
+  }
+  paginateCategories() {
+    this.categoryTotalPages = Math.ceil(this.filteredCategories.length / this.categoryPageSize) || 1;
+    this.categoryTotalPagesArray = Array(this.categoryTotalPages).fill(0).map((x, i) => i + 1);
+    const start = (this.categoryCurrentPage - 1) * this.categoryPageSize;
+    const end = start + this.categoryPageSize;
+    this.pagedCategories = this.filteredCategories.slice(start, end);
+  }
+  setCategoryPage(page: number, event: Event) {
+    event.preventDefault();
+    if (page < 1 || page > this.categoryTotalPages) return;
+    this.categoryCurrentPage = page;
+    this.paginateCategories();
+  }
+  setCategoryPageSize(size: number) {
+    this.categoryPageSize = Math.max(1, +size || 1);
+    this.categoryCurrentPage = 1;
+    this.paginateCategories();
+  }
+  openAddCategory(modalRef: any) {
+    this.categoryForm = { id: null, name: '' };
+    this.categoryEditIndex = null;
+    this.modalService.open(modalRef, { size: 'md' });
+  }
+  openEditCategory(modalRef: any, cat: any, idx: number) {
+    this.categoryForm = { ...cat };
+    this.categoryEditIndex = idx;
+    this.modalService.open(modalRef, { size: 'md' });
+  }
+  saveCategory(modalRef: any) {
+    if (this.categoryForm.name) {
+      if (this.categoryEditIndex !== null) {
+        this.categories[this.categoryEditIndex] = { ...this.categoryForm };
+      } else {
+        this.categories.push({ id: this.categories.length + 1, name: this.categoryForm.name });
+      }
+      this.filterCategories('');
+      modalRef.close();
+      this.categoryEditIndex = null;
+    }
+  }
+
+  filterSubCategories(term: string) {
+    if (!term) {
+      this.filteredSubCategories = this.sub_categories.slice();
+    } else {
+      const filter = term.toLowerCase();
+      this.filteredSubCategories = this.sub_categories.filter(s => s.name.toLowerCase().includes(filter));
+    }
+    this.subCategoryCurrentPage = 1;
+    this.paginateSubCategories();
+  }
+  paginateSubCategories() {
+    this.subCategoryTotalPages = Math.ceil(this.filteredSubCategories.length / this.subCategoryPageSize) || 1;
+    this.subCategoryTotalPagesArray = Array(this.subCategoryTotalPages).fill(0).map((x, i) => i + 1);
+    const start = (this.subCategoryCurrentPage - 1) * this.subCategoryPageSize;
+    const end = start + this.subCategoryPageSize;
+    this.pagedSubCategories = this.filteredSubCategories.slice(start, end);
+  }
+  setSubCategoryPage(page: number, event: Event) {
+    event.preventDefault();
+    if (page < 1 || page > this.subCategoryTotalPages) return;
+    this.subCategoryCurrentPage = page;
+    this.paginateSubCategories();
+  }
+  setSubCategoryPageSize(size: number) {
+    this.subCategoryPageSize = Math.max(1, +size || 1);
+    this.subCategoryCurrentPage = 1;
+    this.paginateSubCategories();
+  }
+  openAddSubCategory(modalRef: any) {
+    this.subCategoryForm = { id: null, name: '' };
+    this.subCategoryEditIndex = null;
+    this.modalService.open(modalRef, { size: 'md' });
+  }
+  openEditSubCategory(modalRef: any, sub: any, idx: number) {
+    this.subCategoryForm = { ...sub };
+    this.subCategoryEditIndex = idx;
+    this.modalService.open(modalRef, { size: 'md' });
+  }
+  saveSubCategory(modalRef: any) {
+    if (this.subCategoryForm.name) {
+      if (this.subCategoryEditIndex !== null) {
+        this.sub_categories[this.subCategoryEditIndex] = { ...this.subCategoryForm };
+      } else {
+        this.sub_categories.push({ id: this.sub_categories.length + 1, name: this.subCategoryForm.name });
+      }
+      this.filterSubCategories('');
+      modalRef.close();
+      this.subCategoryEditIndex = null;
+    }
+  }
+  addLocation(modalRef: any) {
+    this.edit_or_add_location = 'Add New Location';
+    this.locationForm = { name: '', branch_name: '' };
+    this.modalService.open(modalRef, { size: 'md' });
+  }
+
+  addInventoryItem(modalRef: any) {
+    // Open modal for adding a new inventory item
+    this.edit_or_add_product = 'Add New Product';
+    this.product = { id: null, name: '', category: '', quantity: 0, unitPrice: 0, cbm: 0, totalValue: 0, lastUpdated: new Date(), status: '', imgUrl: '', branch_name: '', location: '' };
+    this.modalService.open(modalRef, { size: 'md' });
+  }
+
+  saveLocation(modalRef: any) {
+    if (this.locationForm.name && this.locationForm.branch_name) {
+      // If editing, update the existing location; otherwise, add new
+      const existingIndex = this.locationItems.findIndex(loc => loc.name === this.locationForm.name && loc.branch_name === this.locationForm.branch_name);
+      if (existingIndex === -1) {
+        this.locationItems.push({
+          id: this.locationItems.length + 1,
+          name: this.locationForm.name,
+          branch_name: this.locationForm.branch_name
+        });
+      } else {
+        this.locationItems[existingIndex] = { ...this.locationForm };
+      }
+      this.filterLocationItems('');
+      modalRef.close();
+    }
   }
 }

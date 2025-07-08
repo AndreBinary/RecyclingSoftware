@@ -35,6 +35,12 @@ export const admin: Routes = [
           import('./leads/leads.component').then((m) => m.LeadsComponent),
         title: 'CRM Leads',
       },
+      {
+        path: 'crm/customers',
+        loadComponent: () =>
+          import('./customers/customers.component').then((m) => m.CustomersComponent),
+        title: 'CRM Customers',
+      },
     ],
   },
 ];

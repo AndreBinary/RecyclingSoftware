@@ -5,9 +5,11 @@ import { NgbModal, NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FlatpickrModule } from "angularx-flatpickr";
 import { FormsModule } from "@angular/forms";
 import { Component, ViewChild } from "@angular/core";
-import { interval } from "rxjs";
+import { interval, Subscription } from "rxjs";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { CommonModule } from '@angular/common';
 import { vehicleTableData } from "../../../../shared/data/fleet_management/vehicles";
+import { GlobalSearchService } from '../../../../shared/global-search.service';
 
 
 export type ChartOptions = {
@@ -199,7 +201,7 @@ const DATA = [
 @Component({
   selector: 'app-vehicles',
   standalone: true,
-  imports: [SharedModule, NgApexchartsModule, NgbModule, RouterModule, FlatpickrModule, NgSelectModule, FormsModule],
+  imports: [RouterModule, CommonModule, SharedModule, NgApexchartsModule, NgbModule, FlatpickrModule, FormsModule, NgSelectModule],
   templateUrl: './vehicles.component.html',
   styleUrls: ['./vehicles.component.scss']
 })
@@ -207,8 +209,15 @@ export class VehiclesComponent {
   @ViewChild('chart') chart!: ChartComponent;
   public chartOptions: Partial<ChartOptions> | any;
   public vehicleData = vehicleTableData;
+  filteredVehicleData: any[] = [];
+  pagedVehicleData: any[] = [];
+  currentPage: number = 1;
+  pageSize: number = 5;
+  totalPages: number = 1;
+  totalPagesArray: number[] = [];
+  globalSearchSub: Subscription;
 
-  constructor(private modalService: NgbModal) {
+  constructor(private modalService: NgbModal, private globalSearch: GlobalSearchService) {
     this.chartOptions = {
       series: [{
         name: 'Under Maintenance',
@@ -282,6 +291,49 @@ export class VehiclesComponent {
         },
       },
     }
+    this.globalSearchSub = this.globalSearch.searchTerm$.subscribe(term => {
+      this.filterVehicles(term);
+    });
+    this.filteredVehicleData = this.vehicleData.slice();
+    this.paginateVehicles();
+  }
+
+  filterVehicles(term: string) {
+    if (!term) {
+      this.filteredVehicleData = this.vehicleData.slice();
+    } else {
+      const filter = term.toLowerCase();
+      this.filteredVehicleData = this.vehicleData.filter((item: any) =>
+        Object.values(item).some(val => val && val.toString().toLowerCase().includes(filter))
+      );
+    }
+    this.currentPage = 1;
+    this.paginateVehicles();
+  }
+
+  paginateVehicles() {
+    this.totalPages = Math.ceil(this.filteredVehicleData.length / this.pageSize) || 1;
+    this.totalPagesArray = Array(this.totalPages).fill(0).map((x, i) => i + 1);
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.pagedVehicleData = this.filteredVehicleData.slice(start, end);
+  }
+
+  setPage(page: number, event: Event) {
+    event.preventDefault();
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.paginateVehicles();
+  }
+
+  setPageSize(size: number) {
+    this.pageSize = Math.max(1, +size || 1);
+    this.currentPage = 1;
+    this.paginateVehicles();
+  }
+
+  ngOnDestroy() {
+    if (this.globalSearchSub) this.globalSearchSub.unsubscribe();
   }
 
   creatModel(content: any) {

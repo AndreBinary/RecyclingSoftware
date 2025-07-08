@@ -1,0 +1,300 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>Customers</h4>
+  <button class="btn btn-primary" (click)="addCustomer(addCustomerModal)">Add Customer</button>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Mobile</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of pagedCustomers; let i = index">
+        <td>{{ customer.firstName }}</td>
+        <td>{{ customer.lastName }}</td>
+        <td>{{ customer.mobile }}</td>
+        <td>{{ customer.email }}</td>
+        <td>
+          <span [ngClass]="customer.active ? 'badge bg-success' : 'badge bg-secondary'">
+            {{ customer.active ? 'Active' : 'Inactive' }}
+          </span>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-outline-primary" (click)="openEditCustomer(editCustomerModal, customer, (currentPage-1)*pageSize + i)">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="d-flex align-items-center mt-2">
+  <label for="pageSize" class="me-2 mb-0">Page Size:</label>
+  <select id="pageSize" class="form-select form-select-sm w-auto me-3" [(ngModel)]="pageSize" (ngModelChange)="setPageSize($event)">
+    <option *ngFor="let size of [5, 10, 20, 50]" [value]="size">{{ size }}</option>
+  </select>
+  <nav aria-label="Page navigation">
+    <ul class="pagination mb-0">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <a class="page-link" href="#" (click)="setPage(currentPage - 1, $event)">Previous</a>
+      </li>
+      <li class="page-item" *ngFor="let page of totalPagesArray" [class.active]="page === currentPage">
+        <a class="page-link" href="#" (click)="setPage(page, $event)">{{ page }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <a class="page-link" href="#" (click)="setPage(currentPage + 1, $event)">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<!-- Add Customer Modal Triggered by a boolean flag -->
+<ng-template let-modal #addCustomerModal id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-modal="true" class="modal show d-block">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Customer</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeAddCustomerModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xl-3">
+            <ul class="nav nav-tabs flex-column nav-style-5" id="customerTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" [class.active]="activeTab === 1" (click)="activeTab = 1" type="button" role="tab">
+                  <i class="ri-account-box-line me-2 align-middle d-inline-block"></i>Personal Details
+                </button>
+              </li>
+              <li class="nav-item" role="presentation" *ngIf="customer.is_business">
+                <button class="nav-link" [class.active]="activeTab === 2" (click)="activeTab = 2" type="button" role="tab">
+                  <i class="ri-archive-drawer-line me-2 align-middle d-inline-block"></i>Business
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" [class.active]="activeTab === 3" (click)="activeTab = 3" type="button" role="tab">
+                  <i class="ri-gps-line me-2 align-middle d-inline-block"></i>Address
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" [class.active]="activeTab === 4" (click)="activeTab = 4" type="button" role="tab">
+                  <i class="ri-contacts-book-2-line me-2 align-middle d-inline-block"></i>Contacts
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="col-xl-9">
+            <div class="tab-content">
+              <div class="tab-pane fade" [class.show]="activeTab === 1" [class.active]="activeTab === 1">
+                <div class="text-muted" id="personal-details-vertical-link" role="tabpanel">
+                  <div class="row">
+                    <div class="row mb-3 align-items-center text-center">
+                      <div class="text-center">
+                        <span class="avatar avatar-lg avatar-rounded position-relative" style="display: inline-block;">
+                          <img src="./assets/images/media/media-50.jpg" alt="..." class="w-100 h-100" />
+                          <a class="badge rounded-pill bg-danger avatar-badge"><i class="fe fe-x"></i></a>
+                          <a class="badge rounded-pill bg-primary avatar-badge avatar-edit-btn d-flex justify-content-center align-items-center"
+                             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, 75%); opacity: 0; pointer-events: none; transition: opacity 0.2s;"
+                          >
+                            <i class="fa fa-pencil"></i>
+                          </a>
+                        </span>
+                        <style>
+                          .avatar.avatar-lg.avatar-rounded:hover .avatar-edit-btn {
+                            opacity: 1 !important;
+                            pointer-events: auto !important;
+                          }
+                        </style>
+                      </div>
+                    </div>
+                    <label class="mt-1 mb-1 text-center">
+                      {{customer.firstname}} {{customer.lastname}}
+                    </label>
+                    <div class="mb-3 col-xl-6">
+                      <label for="firstName" class="form-label">First Name</label>
+                      <input type="text" class="form-control" id="firstName" [(ngModel)]="customer.firstname" name="firstName" required />
+                    </div>
+                    <div class="mb-3 col-xl-6">
+                      <label for="lastName" class="form-label">Last Name</label>
+                      <input type="text" class="form-control" id="lastName" [(ngModel)]="customer.lastname" name="lastName" required />
+                    </div>
+                    <div class="mb-3 col-xl-6">
+                      <label for="mobile" class="form-label">Mobile</label>
+                      <input type="text" class="form-control" id="mobile" [(ngModel)]="customer.mobile" name="mobile" required />
+                    </div>
+                    <div class="mb-3 col-xl-6">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" class="form-control" id="email" [(ngModel)]="customer.email" name="email" required />
+                    </div>
+                    <div class="mb-3 col-xl-6">
+                      <div class="form-check form-check-md form-switch float-center">
+                        <input type="checkbox" role="switch" id="switch-md" [(ngModel)]="customer.is_business" (click)="is_business_switch()" class="form-check-input">
+                        <label for="switch-md" class="form-check-label">
+                          <span *ngIf="is_business === true">Is Business</span>
+                          <span *ngIf="is_business === false">Is Individual</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" [class.show]="activeTab === 2" [class.active]="activeTab === 2">
+                <div class="text-muted" id="about-vertical-link" role="tabpanel">
+                  <div class="row">
+                    <div class="mb-3 col-xl-6">
+                      <label for="businessName" class="form-label">Business Name</label>
+                      <input type="text" class="form-control" id="businessName" [(ngModel)]="customer.business.name" name="businessName" required />
+                    </div>
+                    <div class="mb-3 col-xl-6">
+                      <label for="businessType" class="form-label">Business Type</label>
+                      <input type="text" class="form-control" id="businessType" [(ngModel)]="customer.business.type" name="businessType" required />
+                    </div>
+                    <div class="mb-3 col-xl-6">
+                      <label for="businessEmail" class="form-label">Business Email</label>
+                      <input type="email" class="form-control" id="businessEmail" [(ngModel)]="customer.business.email" name="businessEmail" required />
+                    </div>
+                    <div class="mb-3 col-xl-6">
+                      <label for="businessPhone" class="form-label">Business Phone</label>
+                      <input type="text" class="form-control" id="businessPhone" [(ngModel)]="customer.business.phone" name="businessPhone" required />
+                    </div>
+                    <div class="mb-3 col-xl-6"> 
+                      <label for="businessAddress" class="form-label">Business Address</label>
+                      <input type="text" class="form-control" id="businessAddress" [(ngModel)]="customer.business.address" name="businessAddress" required />
+                    </div>
+                    <div class="mb-3 col-xl-6"> 
+                      <label for="businessInformation" class="form-label">Additional Details</label>
+                      <textarea type="text" class="form-control" id="businessAddress" [(ngModel)]="customer.business.additional_info" name="businessAddress"></textarea>
+                    </div>  
+                    <div class="mb-3 col-xl-6"> 
+                      <label for="is_taxable" class="form-label">Is Taxable</label>
+                      <div class="form-check form-check-md form-switch">
+                        <input type="checkbox" role="switch" id="switch-md" [(ngModel)]="customer.business.is_taxable" (click)="is_customer_business_taxable_switch()" class="form-check-input">
+                        <label for="switch-md" class="form-check-label">
+                          <span *ngIf="customer.business.is_taxable === true">Yes</span>
+                          <span *ngIf="customer.business.is_taxable === false">No</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="mb-3 col-xl-6"> 
+                      <label for="businessVatNumber" class="form-label">VAT Number</label>
+                      <input type="text" class="form-control" id="businessVatNumber" [(ngModel)]="customer.business.vat_number" name="business_vat_number"/>
+                    </div>
+                    <div class="mb-3 col-xl-6"> 
+                      <label for="businessRegistrationNumber" class="form-label">Business Registration Number</label>
+                      <input type="text" class="form-control" id="businessRegistrationNumber" [(ngModel)]="customer.business.business_registration_number" name="business_registration_number"/>
+                    </div>
+                    <div class="mb-3 col-xl-6"> 
+                      <label for="businessTaxNumber" class="form-label">Tax Number</label>
+                      <input type="text" class="form-control" id="businessTaxNumber" [(ngModel)]="customer.business.tax_number" name="tax_number"/>
+                    </div> 
+                  </div>
+                    </div>
+              </div>
+              <div class="tab-pane fade" [class.show]="activeTab === 3" [class.active]="activeTab === 3">
+                <div class="show text-muted" id="services-vertical-link" role="tabpanel">
+                   <div class="row mb-2" id="saved_addresses">
+                    <label class="form-label">Saved Locations</label>
+                    <div class="col-md-4 mb-2" *ngFor="let addr of customer.saved_addresses">
+                      <div class="card shadow-sm h-100 text-center custom-card" style="cursor:pointer;">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-3">
+                          <i class="ri-home-4-line mb-2" *ngIf="addr.type === 'house'"></i>
+                          <i class="ri-building-4-line mb-2" *ngIf="addr.type === 'business'"></i>
+                          <span class="fw-semibold">{{ addr.name }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-2">
+                      <div class="col-xl-12 mb-2">
+                        <label for="addressName" class="form-label">Address Name</label>
+                        <input type="text" class="form-control" id="addressName" [(ngModel)]="customer.addresses.name" name="addressName" required />
+                      </div>
+                      <div class="col-xl-6 mb-2">
+                        <label for="address1" class="form-label">Address Line 1</label>
+                        <input type="text" class="form-control" id="address1" [(ngModel)]="customer.addresses.address_1" name="address1" required />
+                      </div>
+                      <div class="col-xl-6 mb-2">
+                        <label for="address2" class="form-label">Address Line 2</label>
+                        <input type="text" class="form-control" id="address2" [(ngModel)]="customer.addresses.address_2" name="address2" required />
+                      </div>
+                      <div class="col-xl-6 mb-2">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" [(ngModel)]="customer.addresses.city" name="city" required />
+                      </div>
+                      <div class="col-xl-6 mb-2">
+                        <label for="province" class="form-label">Province</label>
+                        <input type="text" class="form-control" id="province" [(ngModel)]="customer.addresses.province" name="province" required />
+                      </div>
+                      <div class="col-xl-6 mb-2">
+                        <label for="zip" class="form-label">Zip</label>
+                        <input type="text" class="form-control" id="zip" [(ngModel)]="customer.addresses.zip_code" name="zip" required />
+                      </div>
+                      <div class="col-xl-6 mb-2">
+                        <label for="country" class="form-label">Country</label>
+                        <input type="text" class="form-control" id="country" [(ngModel)]="customer.addresses.country" name="country" required />
+                      </div>
+                  </div>
+                 
+                </div>
+              </div>
+              <div class="tab-pane fade" [class.show]="activeTab === 4" [class.active]="activeTab === 4">
+                <div class="text-muted" id="contacts-vertical-link" role="tabpanel">
+                  Why delicious magazines are killing you. Why our world would
+                  end if restaurants disappeared. Why restaurants are on crack
+                  about restaurants. How restaurants are making the world a
+                  better place. 8 great articles about minute meals. Why our
+                  world would end if healthy snacks disappeared. Why the world
+                  would end without mexican food. The evolution of chef
+                  uniforms.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeAddCustomerModal()">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="saveCustomer()">Save</button>
+        </div>
+</ng-template>
+
+<ng-template #editCustomerModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Edit Customer</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <form #editForm="ngForm" (ngSubmit)="saveEditCustomer(modal)">
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="editFirstName" class="form-label">First Name</label>
+        <input type="text" class="form-control" id="editFirstName" name="editFirstName" [(ngModel)]="editCustomerForm.firstName" required />
+      </div>
+      <div class="mb-3">
+        <label for="editLastName" class="form-label">Last Name</label>
+        <input type="text" class="form-control" id="editLastName" name="editLastName" [(ngModel)]="editCustomerForm.lastName" required />
+      </div>
+      <div class="mb-3">
+        <label for="editMobile" class="form-label">Mobile</label>
+        <input type="text" class="form-control" id="editMobile" name="editMobile" [(ngModel)]="editCustomerForm.mobile" required />
+      </div>
+      <div class="mb-3">
+        <label for="editEmail" class="form-label">Email</label>
+        <input type="email" class="form-control" id="editEmail" name="editEmail" [(ngModel)]="editCustomerForm.email" required />
+      </div>
+      <div class="mb-3">
+        <label for="editActive" class="form-label">Status</label>
+        <select class="form-select" id="editActive" name="editActive" [(ngModel)]="editCustomerForm.active">
+          <option [ngValue]="true">Active</option>
+          <option [ngValue]="false">Inactive</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="!editForm.form.valid">Save</button>
+    </div>
+  </form>
+</ng-template>

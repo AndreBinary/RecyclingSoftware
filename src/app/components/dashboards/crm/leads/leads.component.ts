@@ -3,6 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from '../../../../shared/shared.module';
+import { GlobalSearchService } from '../../../../shared/global-search.service';
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-leads',
   standalone: true,
@@ -24,15 +27,8 @@ simpleItems2:any=[];
 
 closeResult!: string;
 
-constructor(private modalService: NgbModal) {}
-
 openWindowCustomClass(content: any) {
   this.modalService.open(content, { windowClass: 'dark-modal' });
-}
-ngOnInit(): void {
-  this.simpleItems=['Select Status','Closed','Contacted','Follow-up','New']
-  this.simpleItems1=['Social media','Blog Articles','Direct Mail','Organic Serach','Affilites']
-  this.simpleItems2=['Hopt Lead','InFluencer','LostCustomer','Newlead','Patner']
 }
 
 InvoiceData = [
@@ -199,5 +195,42 @@ handleFileInput(event: any): void {
   }
 }
 
+filteredInvoiceData: any[] = [];
+globalSearchSub: Subscription;
+
+constructor(private modalService: NgbModal, private globalSearch: GlobalSearchService) {
+  this.globalSearchSub = this.globalSearch.searchTerm$.subscribe(term => {
+    this.filterLeads(term);
+  });
+}
+
+ngOnInit(): void {
+  this.simpleItems=['Select Status','Closed','Contacted','Follow-up','New']
+  this.simpleItems1=['Social media','Blog Articles','Direct Mail','Organic Serach','Affilites']
+  this.simpleItems2=['Hopt Lead','InFluencer','LostCustomer','Newlead','Patner']
+  this.filteredInvoiceData = this.InvoiceData.slice();
+}
+
+ngOnDestroy() {
+  if (this.globalSearchSub) this.globalSearchSub.unsubscribe();
+}
+
+filterLeads(term: string) {
+    if (!term) {
+      this.filteredInvoiceData = this.InvoiceData.slice();
+    } else {
+      const filter = term.toLowerCase();
+      this.filteredInvoiceData = this.InvoiceData.filter(item =>
+        (item.name && item.name.toLowerCase().includes(filter)) ||
+        (item.mail && item.mail.toLowerCase().includes(filter)) ||
+        (item.Phone && item.Phone.toLowerCase().includes(filter)) ||
+        (item.Company && item.Company.toLowerCase().includes(filter)) ||
+        (item.Status && item.Status.toLowerCase().includes(filter)) ||
+        (item.Source2 && item.Source2.toLowerCase().includes(filter)) ||
+        (item.tag1 && item.tag1.toLowerCase().includes(filter)) ||
+        (item.tag2 && item.tag2.toLowerCase().includes(filter))
+      );
+    }
+  }
 
 }

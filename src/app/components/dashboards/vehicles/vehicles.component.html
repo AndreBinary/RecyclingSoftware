@@ -1,31 +1,9 @@
 <!-- Start::page-header -->
-<div class="d-flex align-items-center justify-content-between my-4 page-header-breadcrumb flex-wrap gap-2">
-    <div>
-        <p class="fw-medium fs-20 mb-0">Fleet Command Center</p>
-        <p class="fs-13 text-muted mb-0">Live overview of all company vehicles and their status.</p>
-    </div>
-    <div class="d-flex align-items-center gap-2 flex-wrap">
-        <button class="btn btn-primary-light btn-wave">
-            <i class="ri-add-line align-middle me-1 lh-1"></i> Register New Vehicle
-        </button>
-        <button class="btn btn-secondary-light btn-wave">
-            <i class="ri-download-2-line align-middle me-1 lh-1"></i> Export Fleet Report
-        </button>
-    </div>
-</div>
-<!-- End::page-header -->
-
-<!-- Start:: row-1 >> KPI CARDS -->
-<div class="row">
-    <div class="col-xxl-3 col-xl-3 col-lg-6 col-md-6">
-        <div class="card custom-card">
-            <div class="card-body p-4">
-                <div class="d-flex align-items-start justify-content-between">
                     <div>
                         <span class="d-block mb-2 text-muted">Total Vehicles</span>
                         <h4 class="mb-0 fs-3">{{ totalVehicles }}</h4>
                     </div>
-                    <div class="avatar avatar-lg bg-primary-transparent">
+                    <div class="avatar avatar-lg bg-primary-transparent"
                         <i class="icon icon-tabler-truck fs-2"></i>
                     </div>
                 </div>
@@ -195,8 +173,4 @@
                         </ngb-pagination>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End:: row-3 -->
+
