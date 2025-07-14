@@ -109,9 +109,9 @@ export class NavService implements OnDestroy {
         {
           path: '/crm', title: 'CRM', type: 'sub', dirchange: false, children: [
             { path: '/crm/companies', title: 'Companies', type: 'link', dirchange: false },
-            { path: '/crm/contacts', title: 'Contacts', type: 'link', dirchange: false },
-            { path: '/crm/deals', title: 'Deals', type: 'link', dirchange: false },
-            { path: '/crm/leads', title: 'Leads', type: 'link', dirchange: false },
+           // { path: '/crm/contacts', title: 'Contacts', type: 'link', dirchange: false },
+            //{ path: '/crm/deals', title: 'Deals', type: 'link', dirchange: false },
+            //{ path: '/crm/leads', title: 'Leads', type: 'link', dirchange: false },
             { path: '/crm/customers', title: 'Customers', type: 'link', dirchange: false },
           ],
         },
@@ -119,6 +119,11 @@ export class NavService implements OnDestroy {
           path: '/fleet-management', title: 'Fleet Management', type: 'sub', dirchange: false, children: [
             { path: '/fleet-management/overview', title: 'Overview', type: 'link', dirchange: false },
             { path: '/fleet-management/vehicles', title: 'Vehicles', type: 'link', dirchange: false },
+          ]
+        },
+        {
+          path: '/site-management', title: 'Site Management', type: 'sub', dirchange: false, children: [
+            { path: '/site-management/dashboard', title: 'Dashboard', type: 'link', dirchange: false },
           ]
         },
 
@@ -135,6 +140,15 @@ export class NavService implements OnDestroy {
             { path: '/schedule-plan', title: 'Schedule Plan', type: 'link', dirchange: false },
 
           ]
+        },
+        {
+          path: '/skip-bin-management', title: 'Skip/Bin Management', type: 'link', dirchange: false
+        },
+        {
+          path: '/agent-portal', title: 'Agent Portal', type: 'link', dirchange: false
+        },
+        {
+          path: '/weighbridge-portal', title: 'Weighbridge Portal', type: 'link', dirchange: false
         },
 
       ],

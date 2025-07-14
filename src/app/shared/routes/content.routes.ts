@@ -8,6 +8,11 @@ import { fleetManagementRoutingModule } from '../../components/dashboards/fleet-
 import { ordersRoutingModule } from '../../components/dashboards/orders/ordersdashboard.routes';
 import { branchesRoutingModule } from '../../components/dashboards/branches/branches.routes';
 import { driversRoutingModule } from '../../components/dashboards/Drivers/driversdashboard.routes';
+import { AuthenticationsRoutingModule } from './auth.routes';
+import { siteManagementRoutingModule } from '../../components/dashboards/site-management/site-managementdashboard.routes';
+import { skipBinManagementRoutingModule } from '../../components/dashboards/skip-bin-management/skip-bin-managementdashboard.routes';
+import { AgentPortalRoutingModule } from '../../components/agent-portal/agent-portal.routes';
+import { WeighbridgePortalRoutingModule } from '../../components/weighbridge-portal/weighbridge-portal.routes';
 
 
 
@@ -20,7 +25,11 @@ import { driversRoutingModule } from '../../components/dashboards/Drivers/driver
    ...fleetManagementRoutingModule.routes,
    ...ordersRoutingModule.routes,
    ...branchesRoutingModule.routes,
-   ...driversRoutingModule.routes
+   ...driversRoutingModule.routes,
+   ...siteManagementRoutingModule.routes,
+   ...skipBinManagementRoutingModule.routes,
+   ...AgentPortalRoutingModule.routes,
+   ...WeighbridgePortalRoutingModule.routes
   ]}
 ];
 

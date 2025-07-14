@@ -10,6 +10,11 @@ export const authen: Routes = [
     loadComponent: () =>
       import('../../authentication/login/login.component').then((m) => m.LoginComponent),
   },
+   {
+    path: 'auth/register-customer',
+    loadComponent: () =>
+      import('../../authentication/register-customer/register-customer.component').then((m) => m.RegisterCustomerComponent),
+  }
 ]
 
 

@@ -100,7 +100,7 @@ export class AuthService {
     // main verification function
     SendVerificationMail() {
       return this.afAuth.currentUser.then((u:any) => u.sendEmailVerification()).then(() => {
-          this.router.navigate(['/sales']);
+          this.router.navigate(['/auth/register-customer']);
         })
     }
       // Set user

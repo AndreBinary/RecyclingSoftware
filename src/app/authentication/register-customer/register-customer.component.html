@@ -1,0 +1,277 @@
+<!-- register-customer.component.html -->
+ <div class="authentication-background">
+<div class="d-flex justify-content-center align-items-center vh-100">
+<div class="card mx-auto" style="max-width: 600px; margin-top: 2rem;">
+  <div class="card-header">
+    <ul class="nav nav-pills card-header-pills justify-content-between">
+      <li class="nav-item" *ngFor="let step of steps; let i = index">
+        <a
+          class="nav-link text-truncate"
+          [class.active]="currentStep === i + 1"
+          [class.disabled]="currentStep < i + 1"
+          (click)="goToStep(i + 1)"
+          href="javascript:void(0)"
+          style="width: 100px;"
+        >
+          {{ step.label }}
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card-body">
+    <!-- Step 1: Personal Details -->
+    <div
+      *ngIf="currentStep === 1"
+      (ngSubmit)="next()"
+      novalidate >
+        <div class="row">
+          <div class="mb-3 col-xl-6">
+            <!-- register-customer.component.html -->
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="firstName"
+              placeholder=""
+              [ngClass]="customerFirstnameValidBorder()"
+              name="firstName"
+              [(ngModel)]="customer.firstname"
+              (change)="validateFirstname()"
+            />
+            <label for="firstName"
+            [ngClass]="customerFirstnameValidLabel()">First Name</label>
+          </div>
+          </div>
+          <div class="mb-3 col-xl-6">
+            <div class="form-floating">
+            <input
+              type="text"
+              placeholder=""
+              class="form-control"
+              id="lastName"
+              [ngClass]="customerLastnameValidBorder()"
+              name="lastName"
+              [(ngModel)]="customer.lastname"
+              (change)="validateLastname()"
+            />
+            <label for="lastName"
+            [ngClass]="customerLastnameValidLabel()">Last Name</label>
+          </div>
+          </div>
+          <div class="mb-3 col-xl-6">
+            <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="mobile"
+              placeholder=""
+              [ngClass]="customerMobileValidBorder()"
+              name="mobile"
+              [(ngModel)]="customer.mobile"
+              (change)="validateMobile()"
+            />
+            <label for="mobile"
+            [ngClass]="customerMobileValidLabel()">Mobile</label>
+          </div>
+          </div>
+          <div class="mb-3 col-xl-6">
+            <div class="form-floating">
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder=""
+              [ngClass]="customerEmailValidBorder()"
+              name="email"
+              [(ngModel)]="customer.email"
+              (change)="validateEmail()"
+            />
+            <label for="email"
+            [ngClass]="customerEmailValidLabel()">Email</label>
+          </div>
+          </div>
+          <div class="mb-3 col-xl-6">
+            <div class="form-check form-check-md form-switch float-center">
+              <input type="checkbox" role="switch" id="switch-md" [(ngModel)]="customer.is_business" (click)="is_business_switch()" class="form-check-input">
+              <label for="switch-md" class="form-check-label">
+                <span *ngIf="customer.is_business === true">Is Business</span>
+                <span *ngIf="customer.is_business === false">Is Individual</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row float-end">
+          <div class="col-xl-1 float-end">
+           <button class="btn btn-primary" (click)="next()" [disabled]="!is_customer_valid">Next</button>  
+          </div>
+
+        </div>
+    </div>
+
+    <!-- Step 2: Business Details -->
+    <div
+      *ngIf="currentStep === 2 && customer.is_business"
+      (ngSubmit)="next()"
+      novalidate
+    >
+                        <div class="row">
+                    <div class="mb-3 col-xl-6">
+                      <label for="businessName" class="form-label">Business Name</label>
+                      <input type="text" class="form-control" id="businessName" [(ngModel)]="customer.business.name" name="businessName" required />
+                    </div>
+                    <div class="mb-3 col-xl-6">
+                      <label for="businessType" class="form-label">Business Type</label>
+                      <input type="text" class="form-control" id="businessType" [(ngModel)]="customer.business.type" name="businessType" required />
+                    </div>
+                    <div class="mb-3 col-xl-6">
+                      <label for="businessEmail" class="form-label">Business Email</label>
+                      <input type="email" class="form-control" id="businessEmail" [(ngModel)]="customer.business.email" name="businessEmail" required />
+                    </div>
+                    <div class="mb-3 col-xl-6">
+                      <label for="businessPhone" class="form-label">Business Phone</label>
+                      <input type="text" class="form-control" id="businessPhone" [(ngModel)]="customer.business.phone" name="businessPhone" required />
+                    </div>
+                    <div class="mb-3 col-xl-6"> 
+                      <label for="businessAddress" class="form-label">Business Address</label>
+                      <input type="text" class="form-control" id="businessAddress" [(ngModel)]="customer.business.address" name="businessAddress" required />
+                    </div>
+                    <div class="mb-3 col-xl-6"> 
+                      <label for="businessInformation" class="form-label">Additional Details</label>
+                      <textarea type="text" class="form-control" id="businessAddress" [(ngModel)]="customer.business.additional_info" name="businessAddress"></textarea>
+                    </div>  
+                    <div class="mb-3 col-xl-6"> 
+                      <label for="businessVatNumber" class="form-label">VAT Number</label>
+                      <input type="text" class="form-control" id="businessVatNumber" [(ngModel)]="customer.business.vat_number" name="business_vat_number"/>
+                    </div>
+                    <div class="mb-3 col-xl-6"> 
+                      <label for="businessRegistrationNumber" class="form-label">Business Registration Number</label>
+                      <input type="text" class="form-control" id="businessRegistrationNumber" [(ngModel)]="customer.business.business_registration_number" name="business_registration_number"/>
+                    </div>
+                    <div class="mb-3 col-xl-6"> 
+                      <label for="businessTaxNumber" class="form-label">Tax Number</label>
+                      <input type="text" class="form-control" id="businessTaxNumber" [(ngModel)]="customer.business.tax_number" name="tax_number"/>
+                    </div> 
+                  </div>
+
+      <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-secondary" (click)="prev()">
+          Back
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="next()"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 3: Address Details -->
+    <form
+      *ngIf="currentStep === 2 && !customer.is_business || customer.is_business && currentStep === 3"
+      [formGroup]="addressForm"
+      (ngSubmit)="next()"
+      novalidate
+    >
+      <div class="mb-3">
+        <label for="street" class="form-label">Street Address</label>
+        <input
+          id="street"
+          class="form-control"
+          formControlName="street"
+          required
+        />
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="city" class="form-label">City</label>
+          <input
+            id="city"
+            class="form-control"
+            formControlName="city"
+            required
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="zip" class="form-label">ZIP / Postal Code</label>
+          <input
+            id="zip"
+            class="form-control"
+            formControlName="zip"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-secondary" (click)="prev()">
+          Back
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="addressForm.invalid"
+        >
+          Next
+        </button>
+      </div>
+    </form>
+
+    <!-- Step 4: OTP Verification -->
+    <form
+      *ngIf="currentStep === 4 && customer.is_business || currentStep === 3 && !customer.is_business"
+      [formGroup]="otpForm"
+      (ngSubmit)="verifyOtp()"
+      novalidate
+    >
+      <div class="mb-3">
+        <label for="otp" class="form-label">Enter OTP</label>
+        <input
+          id="otp"
+          class="form-control"
+          formControlName="otp"
+          maxlength="6"
+          required
+        />
+      </div>
+      <div class="mb-3 text-end">
+        <button
+          type="button"
+          class="btn btn-link p-0"
+          (click)="resendOtp()"
+        >
+          Resend OTP
+        </button>
+      </div>
+
+      <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-secondary" (click)="prev()">
+          Back
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="otpForm.invalid"
+        >
+          Verify & Complete
+        </button>
+      </div>
+    </form>
+
+    <!-- Step 5: Complete & Redirect -->
+    <div
+      *ngIf="currentStep === 5 && customer.is_business || currentStep === 4 && !customer.is_business"
+      class="text-center py-5"
+    >
+      <h4 class="mb-3">Registration Complete!</h4>
+      <p>You will be redirected to the login page shortly.</p>
+    </div>
+  </div>
+</div>
+
+ </div>
+ </div>
+ 

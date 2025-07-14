@@ -1,0 +1,227 @@
+<div class="container-fluid py-4">
+  <!-- Widgets/Graphs Row -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card text-bg-success mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Top Performing Site</h5>
+          <p class="card-text">{{ topSite?.name || '-' }}</p>
+          <small>Total Collected: {{ topSite?.kgCollected || 0 }} kg</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-bg-info mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Total KG Ready</h5>
+          <p class="card-text">{{ totalKgReady }} kg</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-bg-primary mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Sites Monitored</h5>
+          <p class="card-text">{{ filteredSites.length }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sample Graphs Row -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Site Collection Trends</h5>
+          <apx-chart [series]="siteTrendsChartOptions.series" [chart]="siteTrendsChartOptions.chart" [xaxis]="siteTrendsChartOptions.xaxis" [stroke]="siteTrendsChartOptions.stroke" [markers]="siteTrendsChartOptions.markers" [legend]="siteTrendsChartOptions.legend"></apx-chart>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Top Agents by Collection</h5>
+          <apx-chart [series]="agentCollectionChartOptions.series" [chart]="agentCollectionChartOptions.chart" [xaxis]="agentCollectionChartOptions.xaxis" [plotOptions]="agentCollectionChartOptions.plotOptions" [dataLabels]="agentCollectionChartOptions.dataLabels" [legend]="agentCollectionChartOptions.legend"></apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Site Button -->
+  <div class="row mb-2">
+    <div class="col-12 text-end">
+      <button class="btn btn-primary rounded-pill" (click)="openAddSiteModal(addSiteModal)">
+        <i class="ri-add-line"></i> Add Site
+      </button>
+    </div>
+  </div>
+
+  <!-- Sites Table with Pagination and Actions -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Sites</h5>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Site Name</th>
+                  <th>Location</th>
+                  <th>Status</th>
+                  <th>KG Ready</th>
+                  <th>Total Collected</th>
+                  <th>Responsible Agents</th>
+                  <th>Contact</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let site of pagedSites">
+                  <td>{{ site.name }}</td>
+                  <td>{{ site.location }}</td>
+                  <td>
+                    <span [ngClass]="site.status === 'Active' ? 'badge bg-success' : 'badge bg-secondary'">
+                      {{ site.status }}
+                    </span>
+                  </td>
+                  <td>{{ site.kgReady }}</td>
+                  <td>{{ site.kgCollected }}</td>
+                  <td>{{ getAgentNames(site) }}</td>
+                  <td>
+                    <div *ngFor="let agent of site.agents">
+                      <div>{{ agent.phone }}<br>{{ agent.email }}</div>
+                    </div>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-info me-1" (click)="openEditSiteModal(editSiteModal, site)"><i class="ri-edit-line"></i></button>
+                  </td>
+                </tr>
+                <tr *ngFor="let site of pagedSites">
+                  <td colspan="8">
+                    <div class="mt-2 mb-2">
+                      <strong>Materials Ready for Pickup:</strong>
+                      <div class="table-responsive">
+                        <table class="table table-bordered table-sm mb-0">
+                          <thead>
+                            <tr>
+                              <th *ngFor="let m of materialTypes">{{ m }}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td *ngFor="let m of getMaterialsForSite(site.name)">{{ m.total }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+            <div class="d-flex align-items-center">
+              <span class="me-2">Show</span>
+              <input type="number" min="1" class="form-control form-control-sm d-inline-block" style="width: 70px;" [(ngModel)]="pageSize" (ngModelChange)="setPageSize($event)" />
+              <span class="ms-2">entries</span>
+            </div>
+            <div>
+              Showing {{(currentPage - 1) * pageSize + 1}} to {{(currentPage - 1) * pageSize + pagedSites.length}} of {{filteredSites.length}} entries
+            </div>
+            <nav>
+              <ul class="pagination mb-0">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" href="#" (click)="setPage(currentPage - 1, $event)">Previous</a>
+                </li>
+                <li class="page-item" *ngFor="let page of totalPagesArray; let i = index" [class.active]="currentPage === (i+1)">
+                  <a class="page-link" href="#" (click)="setPage(i+1, $event)">{{i+1}}</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" href="#" (click)="setPage(currentPage + 1, $event)">Next</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Site Modal -->
+  <ng-template #addSiteModal let-modal>
+    <div class="modal-header">
+      <h6 class="modal-title">Add New Site</h6>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row mb-3">
+        <div class="col-xl-6">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="siteName" [(ngModel)]="newSite.name" placeholder="Site Name">
+            <label for="siteName">Site Name</label>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="siteLocation" [(ngModel)]="newSite.location" placeholder="Site Address">
+            <label for="siteLocation">Site Address</label>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-xl-6">
+          <div class="form-floating">
+            <select class="form-select" id="siteManager" [(ngModel)]="newSite.manager">
+              <option *ngFor="let manager of managers" [ngValue]="manager">{{ manager.name }}</option>
+            </select>
+            <label for="siteManager">Responsible Manager</label>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <div class="form-floating">
+            <select class="form-select" id="siteAgent" [(ngModel)]="newSite.agent">
+              <option *ngFor="let agent of agents" [ngValue]="agent">{{ agent.name }}</option>
+            </select>
+            <label for="siteAgent">Agent</label>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-xl-6">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="sitePhone" [(ngModel)]="newSite.phone" placeholder="Contact Number">
+            <label for="sitePhone">Contact Number</label>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <div class="form-floating">
+            <input type="email" class="form-control" id="siteEmail" [(ngModel)]="newSite.email" placeholder="Email">
+            <label for="siteEmail">Email</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="saveSite(modal)">Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #editSiteModal let-modal let-site="site">
+    <div class="modal-header">
+      <h6 class="modal-title">Edit Site</h6>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <!-- Similar form as Add Site, prefilled with site data -->
+      <!-- ... -->
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+      <button type="button" class="btn btn-primary">Save</button>
+    </div>
+  </ng-template>
+</div>

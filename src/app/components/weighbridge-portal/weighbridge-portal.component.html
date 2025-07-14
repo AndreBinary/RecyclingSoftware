@@ -1,0 +1,176 @@
+<div class="container py-4">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2>Weighbridge Portal</h2>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Weighbridge Operator</h5>
+          <p><strong>{{ operator.name }}</strong></p>
+          <p>Contact: {{ operator.phone }}<br>{{ operator.email }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Weighbridge Location</h5>
+          <p><strong>{{ weighbridge.name }}</strong></p>
+          <p>Address: {{ weighbridge.location }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Record Vehicle/Material Weighing</h5>
+          <form (ngSubmit)="addWeighing()" #weighForm="ngForm">
+            <div class="row g-3 align-items-end">
+              <div class="col-md-2">
+                <label class="form-label">Vehicle Reg</label>
+                <input type="text" class="form-control" [(ngModel)]="newWeigh.vehicle" name="vehicle" required />
+              </div>
+              <div class="col-md-2">
+                <label class="form-label">Material Type</label>
+                <select class="form-select" [(ngModel)]="newWeigh.material" name="material" required>
+                  <option value="">Select</option>
+                  <option *ngFor="let m of materialTypes" [value]="m">{{ m }}</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label class="form-label">Weigh Type</label>
+                <select class="form-select" [(ngModel)]="newWeigh.status" name="status" (change)="setWeighStatus(newWeigh.status)">
+                  <option value="IN">Weigh In (Gross)</option>
+                  <option value="OUT">Weigh Out (Tare)</option>
+                </select>
+              </div>
+              <div class="col-md-2" *ngIf="newWeigh.status === 'IN'">
+                <label class="form-label">Gross Weight (kg)</label>
+                <input type="number" class="form-control" [(ngModel)]="newWeigh.gross" name="gross" min="0.01" step="0.01" required />
+              </div>
+              <div class="col-md-2" *ngIf="newWeigh.status === 'OUT'">
+                <label class="form-label">Tare Weight (kg)</label>
+                <input type="number" class="form-control" [(ngModel)]="newWeigh.tare" name="tare" min="0.01" step="0.01" required />
+              </div>
+              <div class="col-md-2 d-flex align-items-end">
+                <button class="btn btn-success w-100" type="submit" [disabled]="!weighForm.form.valid">Add Weighing</button>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-12">
+                <div class="text-center">
+                  <img [src]="getCameraUrl()" alt="Vehicle Top Camera" class="img-fluid rounded shadow" style="max-width: 400px;" />
+                  <div class="small text-muted">Live Camera: Vehicle Top View</div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Weighing History</h5>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Vehicle</th>
+                  <th>Material</th>
+                  <th>Gross (kg)</th>
+                  <th>Tare (kg)</th>
+                  <th>Net (kg)</th>
+                  <th>Type</th>
+                  <th>Camera</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let w of weighingHistory">
+                  <td>{{ w.date | date:'short' }}</td>
+                  <td>{{ w.vehicle }}</td>
+                  <td>{{ w.material }}</td>
+                  <td>{{ w.gross }}</td>
+                  <td>{{ w.tare }}</td>
+                  <td>{{ w.net }}</td>
+                  <td>{{ w.status }}</td>
+                  <td>
+                    <img *ngIf="w.cameraUrl" [src]="w.cameraUrl" alt="Camera" style="width: 80px; height: 40px; object-fit: cover; border-radius: 4px;" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Material Totals (Net Weight)</h5>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Material</th>
+                  <th>Total Net Weight (kg)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let m of materialTypes">
+                  <td>{{ m }}</td>
+                  <td>{{ getMaterialTotal(m) }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4" *ngIf="inProgressKeys.length">
+    <div class="col-12">
+      <div class="card border-warning">
+        <div class="card-body">
+          <h5 class="card-title text-warning">In Progress Weigh-Ins (Awaiting Weigh-Out)</h5>
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm mb-0">
+              <thead>
+                <tr>
+                  <th>Vehicle</th>
+                  <th>Material</th>
+                  <th>Gross (kg)</th>
+                  <th>Date In</th>
+                  <th>Camera</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let v of inProgressKeys">
+                  <ng-container *ngFor="let w of inProgress[v]">
+                    <td>{{ w.vehicle }}</td>
+                    <td>{{ w.material }}</td>
+                    <td>{{ w.gross }}</td>
+                    <td>{{ w.date | date:'short' }}</td>
+                    <td>
+                      <img *ngIf="w.cameraUrl" [src]="w.cameraUrl" alt="Camera" style="width: 80px; height: 40px; object-fit: cover; border-radius: 4px;" />
+                    </td>
+                  </ng-container>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
